@@ -1,0 +1,31 @@
+{
+  "name": "speculo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile-js": "watchify src/js/main.js -o dist/js/bundle.js -t babelify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benhowdle89/speculo.git"
+  },
+  "keywords": [],
+  "author": "Ben Howdle <hello@benhowdle.im> (http://benhowdle.im/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/benhowdle89/speculo/issues"
+  },
+  "homepage": "https://github.com/benhowdle89/speculo#readme",
+  "devDependencies": {
+    "babel-cli": "^6.5.1",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "babelify": "^7.3.0",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "react-redux": "^4.4.0",
+    "redux": "^3.3.1",
+    "store": "^1.3.20"
+  }
+}
