@@ -20581,16 +20581,26 @@ var _layouts2 = _interopRequireDefault(_layouts);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var styles = {
+    layouts: {
+        textAlign: 'center'
+    }
+};
+
 var Layouts = function Layouts(_ref) {
     var palette = _ref.palette;
     var numberOfLayouts = _ref.numberOfLayouts;
 
     return _react2.default.createElement(
         'div',
-        { className: 'p3' },
+        { className: 'p3 flex-auto flex layouts', style: styles.layouts },
         Array.from({ length: numberOfLayouts }).map(function (layout, index) {
             var Layout = _layouts2.default['layout' + index];
-            return _react2.default.createElement(Layout, { palette: palette });
+            return _react2.default.createElement(
+                'div',
+                { className: 'mr2 layout' },
+                _react2.default.createElement(Layout, { palette: palette })
+            );
         })
     );
 };
@@ -20598,34 +20608,102 @@ var Layouts = function Layouts(_ref) {
 exports.default = Layouts;
 
 },{"./layouts/":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts/index.js","react":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/react.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts/0.jsx":[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var styles = {};
+
 var Layout0 = function Layout0(_ref) {
     var palette = _ref.palette;
 
     return _react2.default.createElement(
-        'div',
+        "div",
         null,
-        'LAYOUT 0',
-        Object.keys(palette).map(function (colour) {
-            return _react2.default.createElement(
-                'p',
+        _react2.default.createElement(
+            "div",
+            { className: "flex border-bottom pb2" },
+            _react2.default.createElement("img", { src: "/dist/images/logo.png", className: "pl1", alt: "" })
+        ),
+        _react2.default.createElement(
+            "div",
+            { className: "hero border-bottom pb2" },
+            _react2.default.createElement(
+                "h2",
                 null,
-                colour,
-                ': ',
-                palette[colour]
-            );
-        })
+                "Some hero text, we do x y z blah blah blah"
+            ),
+            _react2.default.createElement(
+                "h3",
+                null,
+                "But we also do more blah blah blah"
+            ),
+            _react2.default.createElement(
+                "div",
+                { className: "flex justify-center" },
+                _react2.default.createElement(
+                    "div",
+                    { className: "button primary border py1 px2 self-center" },
+                    "Primary"
+                ),
+                _react2.default.createElement(
+                    "div",
+                    { className: "button secondary border py1 px2 self-center" },
+                    "Secondary"
+                )
+            )
+        ),
+        _react2.default.createElement(
+            "div",
+            { className: "flex pt2 border-bottom" },
+            _react2.default.createElement(
+                "div",
+                { className: "flex flex-column" },
+                _react2.default.createElement("img", { src: "https://unsplash.it/75/50", alt: "" }),
+                _react2.default.createElement(
+                    "p",
+                    null,
+                    "Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. "
+                )
+            ),
+            _react2.default.createElement(
+                "div",
+                { className: "flex flex-column mx2" },
+                _react2.default.createElement("img", { src: "https://unsplash.it/75/50", alt: "" }),
+                _react2.default.createElement(
+                    "p",
+                    null,
+                    "Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. "
+                )
+            ),
+            _react2.default.createElement(
+                "div",
+                { className: "flex flex-column" },
+                _react2.default.createElement("img", { src: "https://unsplash.it/75/50", alt: "" }),
+                _react2.default.createElement(
+                    "p",
+                    null,
+                    "Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. "
+                )
+            )
+        ),
+        _react2.default.createElement(
+            "div",
+            { className: "flex justify-center" },
+            _react2.default.createElement(
+                "p",
+                null,
+                "Some footer text."
+            )
+        )
     );
 };
 
@@ -20893,12 +20971,12 @@ var _actionTypes = require('../constants/action-types');
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var initialState = {
-    buttonColour: '#000000',
-    accentColour: '#000000',
-    bodyBackgroundColour: '#ffffff',
-    secondaryBackgroundColour: '#000000',
-    textColour: '#f7f7f7',
-    headingColour: '#333333'
+    bodyBackgroundColour: '#000000',
+    primaryButtonColour: '#000000',
+    secondaryButtonColour: '#ffffff',
+    headingTextColour: '#000000',
+    secondaryHeadingTextColour: '#333333',
+    bodyTextColour: '#f7f7f7'
 };
 
 function paletteState() {
