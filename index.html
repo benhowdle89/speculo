@@ -3,13 +3,25 @@
 
 <head>
     <meta charset="utf-8">
+    <script src="https://use.typekit.net/rpw8olm.js"></script>
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
     <link href="https://npmcdn.com/basscss@8.0.1/css/basscss.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/dist/fonts/font.css">
     <style>
 
+        * {
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
+
         html,
         body {
             height: 100%;
+        }
+
+        body {
+            font-family: "museo-sans",sans-serif;
         }
 
         .layouts {
@@ -19,6 +31,10 @@
 
         .layouts .layout> div {
             height: 100%;
+        }
+
+        .layouts * {
+            border-color: #55687c;
         }
 
         .iphone-image {

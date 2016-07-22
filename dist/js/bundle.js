@@ -1,4 +1,13 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/fbjs/lib/EventListener.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/contrast/index.js":[function(require,module,exports){
+var hexToRgb = require('hex-to-rgb');
+
+module.exports = function contrast (hex) {
+  var rgb = hexToRgb(hex);
+  var o = Math.round(((parseInt(rgb[0]) * 299) + (parseInt(rgb[1]) * 587) + (parseInt(rgb[2]) * 114)) /1000);
+
+  return (o <= 180) ? 'dark' : 'light';
+};
+},{"hex-to-rgb":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/hex-to-rgb/index.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/fbjs/lib/EventListener.js":[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -1265,7 +1274,44 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = warning;
 }).call(this,require('_process'))
-},{"./emptyFunction":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/fbjs/lib/emptyFunction.js","_process":"/usr/local/lib/node_modules/browserify/node_modules/process/browser.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/hoist-non-react-statics/index.js":[function(require,module,exports){
+},{"./emptyFunction":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/fbjs/lib/emptyFunction.js","_process":"/usr/local/lib/node_modules/browserify/node_modules/process/browser.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/hex-to-rgb/index.js":[function(require,module,exports){
+module.exports = function hexToRgb (hex) {
+
+  if (hex.charAt && hex.charAt(0) === '#') {
+    hex = removeHash(hex)
+  }
+
+  if (hex.length === 3) {
+    hex = expand(hex)
+  }
+
+  var bigint = parseInt(hex, 16)
+  var r = (bigint >> 16) & 255
+  var g = (bigint >> 8) & 255
+  var b = bigint & 255
+
+  return [r, g, b]
+}
+
+function removeHash (hex) {
+
+  var arr = hex.split('')
+  arr.shift()
+  return arr.join('')
+}
+
+function expand (hex) {
+
+  return hex
+    .split('')
+    .reduce(function (accum, value) {
+
+      return accum.concat([value, value])
+    }, [])
+    .join('')
+}
+
+},{}],"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/hoist-non-react-statics/index.js":[function(require,module,exports){
 /**
  * Copyright 2015, Yahoo! Inc.
  * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
@@ -20506,11 +20552,31 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _contrast = require('contrast');
+
+var _contrast2 = _interopRequireDefault(_contrast);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var styles = {
+    pickerWrap: {},
     color: {
-        textTransform: 'capitalize'
+        textTransform: 'capitalize',
+        fontSize: '12px'
+    },
+    labelPicker: {
+        cursor: 'pointer',
+        boxShadow: '0 1px 2px rgba(5,30,50,.6)',
+        borderRadius: '4px'
+    },
+    picker: {
+        opacity: 0,
+        width: 0,
+        height: 0
+    },
+    colorText: {
+        dark: '#ffffff',
+        light: '#38495c'
     }
 };
 
@@ -20522,17 +20588,26 @@ var ColourPickers = function ColourPickers(_ref) {
         'div',
         null,
         Object.keys(palette).map(function (colour) {
+            var colorText = styles.colorText[(0, _contrast2.default)(palette[colour])];
             return _react2.default.createElement(
                 'div',
-                { className: 'px1 flex flex-column' },
+                { className: 'flex flex-column m2', style: styles.pickerWrap },
                 _react2.default.createElement(
-                    'p',
-                    { style: styles.color },
-                    colour.replace(/([A-Z])/g, ' $1')
-                ),
-                _react2.default.createElement('input', { type: 'color', onChange: function onChange(event) {
-                        onColourChange(colour, event.target.value);
-                    }, value: palette[colour] })
+                    'label',
+                    { className: 'py2 px1 flex justify-center', style: Object.assign({}, styles.labelPicker, {
+                            backgroundColor: palette[colour]
+                        }) },
+                    _react2.default.createElement('input', { style: styles.picker, type: 'color', onChange: function onChange(event) {
+                            onColourChange(colour, event.target.value);
+                        }, value: palette[colour] }),
+                    _react2.default.createElement(
+                        'p',
+                        { style: Object.assign({}, styles.color, {
+                                color: colorText
+                            }) },
+                        colour.replace(/Colour/, '').replace(/([A-Z])/g, ' $1')
+                    )
+                )
             );
         })
     );
@@ -20540,7 +20615,7 @@ var ColourPickers = function ColourPickers(_ref) {
 
 exports.default = ColourPickers;
 
-},{"react":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/react.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/header.jsx":[function(require,module,exports){
+},{"contrast":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/contrast/index.js","react":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/react.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/header.jsx":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20557,13 +20632,19 @@ var _colourPickers2 = _interopRequireDefault(_colourPickers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var styles = {
+    header: {
+        boxShadow: '1px 0 1px rgba(5,30,50,.2)'
+    }
+};
+
 var Header = function Header(_ref) {
     var onColourChange = _ref.onColourChange;
     var palette = _ref.palette;
 
     return _react2.default.createElement(
         'header',
-        { className: 'px2' },
+        { className: 'col-2', style: styles.header },
         _react2.default.createElement(_colourPickers2.default, { onColourChange: onColourChange, palette: palette })
     );
 };
@@ -20592,7 +20673,8 @@ var styles = {
         textAlign: 'center'
     },
     layout: {
-        width: 'calc(100% * (1/3) - 10px - 1px)'
+        width: 'calc(100% * (1/3) - 10px - 1px)',
+        boxShadow: '0 1px 2px rgba(5,30,50,.6)'
     }
 };
 
@@ -20602,12 +20684,12 @@ var Layouts = function Layouts(_ref) {
 
     return _react2.default.createElement(
         'div',
-        { className: 'px2 flex-auto flex layouts flex-wrap justify-between', style: styles.layouts },
+        { className: 'col-10 flex layouts flex-wrap justify-between p2', style: styles.layouts },
         Array.from({ length: numberOfLayouts }).map(function (layout, index) {
             var Layout = _layouts2.default['layout' + index];
             return _react2.default.createElement(
                 'div',
-                { className: 'layout col-4 border mb2', style: styles.layout },
+                { className: 'layout col-4 mb2', style: styles.layout },
                 _react2.default.createElement(Layout, { palette: palette })
             );
         })
@@ -20697,8 +20779,8 @@ var Layout0 = function Layout0(_ref) {
             { className: "flex p2 border-bottom" },
             _react2.default.createElement(
                 "div",
-                { className: "flex flex-column" },
-                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image", alt: "" }),
+                { className: "flex flex-column items-center" },
+                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image mb1", alt: "" }),
                 _react2.default.createElement(
                     "p",
                     { style: {
@@ -20709,8 +20791,8 @@ var Layout0 = function Layout0(_ref) {
             ),
             _react2.default.createElement(
                 "div",
-                { className: "flex flex-column mx2" },
-                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image", alt: "" }),
+                { className: "flex flex-column mx2 items-center" },
+                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image mb1", alt: "" }),
                 _react2.default.createElement(
                     "p",
                     { style: {
@@ -20721,8 +20803,8 @@ var Layout0 = function Layout0(_ref) {
             ),
             _react2.default.createElement(
                 "div",
-                { className: "flex flex-column" },
-                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image", alt: "" }),
+                { className: "flex flex-column items-center" },
+                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image mb1", alt: "" }),
                 _react2.default.createElement(
                     "p",
                     { style: {
@@ -20831,8 +20913,8 @@ var Layout1 = function Layout1(_ref) {
             { className: "flex p2 border-bottom" },
             _react2.default.createElement(
                 "div",
-                { className: "flex flex-column" },
-                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image", alt: "" }),
+                { className: "flex flex-column items-center" },
+                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image mb1", alt: "" }),
                 _react2.default.createElement(
                     "p",
                     { style: {
@@ -20843,8 +20925,8 @@ var Layout1 = function Layout1(_ref) {
             ),
             _react2.default.createElement(
                 "div",
-                { className: "flex flex-column mx2" },
-                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image", alt: "" }),
+                { className: "flex flex-column mx2 items-center" },
+                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image mb1", alt: "" }),
                 _react2.default.createElement(
                     "p",
                     { style: {
@@ -20855,8 +20937,8 @@ var Layout1 = function Layout1(_ref) {
             ),
             _react2.default.createElement(
                 "div",
-                { className: "flex flex-column" },
-                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image", alt: "" }),
+                { className: "flex flex-column items-center" },
+                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image mb1", alt: "" }),
                 _react2.default.createElement(
                     "p",
                     { style: {
@@ -21107,7 +21189,7 @@ var Layout3 = function Layout3(_ref) {
                 ),
                 _react2.default.createElement(
                     "div",
-                    { className: "button primary border py0 px2 self-center", style: {
+                    { className: "button primary border py0 px2 self-center col-6 mx-auto mt1", style: {
                             backgroundColor: palette.primaryButtonBackgroundColour
                         } },
                     _react2.default.createElement(
@@ -21125,8 +21207,8 @@ var Layout3 = function Layout3(_ref) {
             { className: "flex p2 border-bottom" },
             _react2.default.createElement(
                 "div",
-                { className: "flex flex-column mr1" },
-                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image", alt: "" }),
+                { className: "flex flex-column items-center" },
+                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image mb1", alt: "" }),
                 _react2.default.createElement(
                     "p",
                     { style: {
@@ -21137,8 +21219,8 @@ var Layout3 = function Layout3(_ref) {
             ),
             _react2.default.createElement(
                 "div",
-                { className: "flex flex-column mr1" },
-                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image", alt: "" }),
+                { className: "flex flex-column mx2 items-center" },
+                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image mb1", alt: "" }),
                 _react2.default.createElement(
                     "p",
                     { style: {
@@ -21149,8 +21231,8 @@ var Layout3 = function Layout3(_ref) {
             ),
             _react2.default.createElement(
                 "div",
-                { className: "flex flex-column mr1" },
-                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image", alt: "" }),
+                { className: "flex flex-column items-center" },
+                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image mb1", alt: "" }),
                 _react2.default.createElement(
                     "p",
                     { style: {
@@ -21233,18 +21315,54 @@ var Layout4 = function Layout4(_ref) {
             ),
             _react2.default.createElement(
                 "div",
-                { className: "border py1 px2 my1" },
+                { className: "flex mb2" },
                 _react2.default.createElement(
-                    "h3",
-                    null,
-                    "Some text"
+                    "div",
+                    { className: "border py1 px2 my1" },
+                    _react2.default.createElement(
+                        "h3",
+                        null,
+                        "Some text"
+                    ),
+                    _react2.default.createElement(
+                        "p",
+                        { className: "pl1", style: {
+                                color: palette.bodyTextColour
+                            } },
+                        "Some more text"
+                    )
                 ),
                 _react2.default.createElement(
-                    "p",
-                    { className: "pl1", style: {
-                            color: palette.bodyTextColour
-                        } },
-                    "Some more text"
+                    "div",
+                    { className: "border py1 px2 my1" },
+                    _react2.default.createElement(
+                        "h3",
+                        null,
+                        "Some text"
+                    ),
+                    _react2.default.createElement(
+                        "p",
+                        { className: "pl1", style: {
+                                color: palette.bodyTextColour
+                            } },
+                        "Some more text"
+                    )
+                ),
+                _react2.default.createElement(
+                    "div",
+                    { className: "border py1 px2 my1" },
+                    _react2.default.createElement(
+                        "h3",
+                        null,
+                        "Some text"
+                    ),
+                    _react2.default.createElement(
+                        "p",
+                        { className: "pl1", style: {
+                                color: palette.bodyTextColour
+                            } },
+                        "Some more text"
+                    )
                 )
             ),
             _react2.default.createElement(
@@ -21324,7 +21442,7 @@ var Layout5 = function Layout5(_ref) {
                 ),
                 _react2.default.createElement(
                     "div",
-                    { className: "button primary border py0 px2 self-center", style: {
+                    { className: "button primary border py0 px2 self-center col-6 mx-auto mt1", style: {
                             backgroundColor: palette.primaryButtonBackgroundColour
                         } },
                     _react2.default.createElement(
@@ -21369,7 +21487,7 @@ var Layout5 = function Layout5(_ref) {
                 ),
                 _react2.default.createElement(
                     "div",
-                    { className: "button primary border py0 px2 self-center", style: {
+                    { className: "button primary border py0 px2 self-center col-6 mx-auto mt1", style: {
                             backgroundColor: palette.primaryButtonBackgroundColour
                         } },
                     _react2.default.createElement(
@@ -21597,13 +21715,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var initialState = {
     bodyBackgroundColour: '#ffffff',
+    bodyTextColour: '#023161',
     primaryButtonBackgroundColour: '#008cdd',
     primaryButtonTextColour: '#ffffff',
     secondaryButtonBackgroundColour: '#f7f7f7',
     secondaryButtonTextColour: '#333333',
     headingTextColour: '#333333',
-    secondaryHeadingTextColour: '#5a748e',
-    bodyTextColour: '#023161'
+    secondaryHeadingTextColour: '#5a748e'
 };
 
 function paletteState() {

@@ -23,7 +23,7 @@ const Layout3 = ({ palette }) => {
                     <h3 style={{
                             color: palette.secondaryHeadingTextColour
                         }}>Some more byline text</h3>
-                    <div className="button primary border py0 px2 self-center" style={{
+                    <div className="button primary border py0 px2 self-center col-6 mx-auto mt1" style={{
                             backgroundColor: palette.primaryButtonBackgroundColour
                         }}><p style={{
                             color: palette.primaryButtonTextColour
@@ -31,20 +31,20 @@ const Layout3 = ({ palette }) => {
                 </div>
             </div>
             <div className="flex p2 border-bottom">
-                <div className="flex flex-column mr1">
-                    <img src="https://unsplash.it/400/266?image=431" className="small-image" alt=""/>
+                <div className="flex flex-column items-center">
+                    <img src="https://unsplash.it/400/266?image=431" className="small-image mb1" alt=""/>
                     <p style={{
                             color: palette.bodyTextColour
                         }}>Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. </p>
                 </div>
-                <div className="flex flex-column mr1">
-                    <img src="https://unsplash.it/400/266?image=431" className="small-image" alt=""/>
+                <div className="flex flex-column mx2 items-center">
+                    <img src="https://unsplash.it/400/266?image=431" className="small-image mb1" alt=""/>
                     <p style={{
                             color: palette.bodyTextColour
                         }}>Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. </p>
                 </div>
-                <div className="flex flex-column mr1">
-                    <img src="https://unsplash.it/400/266?image=431" className="small-image" alt=""/>
+                <div className="flex flex-column items-center">
+                    <img src="https://unsplash.it/400/266?image=431" className="small-image mb1" alt=""/>
                     <p style={{
                             color: palette.bodyTextColour
                         }}>Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. </p>

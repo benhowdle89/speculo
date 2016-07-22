@@ -19,7 +19,7 @@ const Layout5 = ({ palette }) => {
                     <h3 style={{
                             color: palette.secondaryHeadingTextColour
                         }}>But we also do more blah blah blah</h3>
-                        <div className="button primary border py0 px2 self-center" style={{
+                        <div className="button primary border py0 px2 self-center col-6 mx-auto mt1" style={{
                                 backgroundColor: palette.primaryButtonBackgroundColour
                             }}><p style={{
                                 color: palette.primaryButtonTextColour
@@ -40,7 +40,7 @@ const Layout5 = ({ palette }) => {
                     <h3 style={{
                             color: palette.secondaryHeadingTextColour
                         }}>But we also do more blah blah blah</h3>
-                        <div className="button primary border py0 px2 self-center" style={{
+                        <div className="button primary border py0 px2 self-center col-6 mx-auto mt1" style={{
                                 backgroundColor: palette.primaryButtonBackgroundColour
                             }}><p style={{
                                 color: palette.primaryButtonTextColour

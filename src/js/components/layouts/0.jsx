@@ -33,20 +33,20 @@ const Layout0 = ({ palette }) => {
                 </div>
             </div>
             <div className="flex p2 border-bottom">
-                <div className="flex flex-column">
-                    <img src="https://unsplash.it/400/266?image=431" className="small-image" alt=""/>
+                <div className="flex flex-column items-center">
+                    <img src="https://unsplash.it/400/266?image=431" className="small-image mb1" alt=""/>
                     <p style={{
                             color: palette.bodyTextColour
                         }}>Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. </p>
                 </div>
-                <div className="flex flex-column mx2">
-                    <img src="https://unsplash.it/400/266?image=431" className="small-image" alt=""/>
+                <div className="flex flex-column mx2 items-center">
+                    <img src="https://unsplash.it/400/266?image=431" className="small-image mb1" alt=""/>
                     <p style={{
                             color: palette.bodyTextColour
                         }}>Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. </p>
                 </div>
-                <div className="flex flex-column">
-                    <img src="https://unsplash.it/400/266?image=431" className="small-image" alt=""/>
+                <div className="flex flex-column items-center">
+                    <img src="https://unsplash.it/400/266?image=431" className="small-image mb1" alt=""/>
                     <p style={{
                             color: palette.bodyTextColour
                         }}>Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. </p>

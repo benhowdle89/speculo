@@ -25,11 +25,25 @@ const Layout4 = ({ palette }) => {
                             color: palette.bodyTextColour
                         }}>Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. </p>
                 </div>
-                <div className="border py1 px2 my1">
-                    <h3>Some text</h3>
-                    <p className="pl1" style={{
-                            color: palette.bodyTextColour
-                        }}>Some more text</p>
+                <div className="flex mb2">
+                    <div className="border py1 px2 my1">
+                        <h3>Some text</h3>
+                        <p className="pl1" style={{
+                                color: palette.bodyTextColour
+                            }}>Some more text</p>
+                    </div>
+                    <div className="border py1 px2 my1">
+                        <h3>Some text</h3>
+                        <p className="pl1" style={{
+                                color: palette.bodyTextColour
+                            }}>Some more text</p>
+                    </div>
+                    <div className="border py1 px2 my1">
+                        <h3>Some text</h3>
+                        <p className="pl1" style={{
+                                color: palette.bodyTextColour
+                            }}>Some more text</p>
+                    </div>
                 </div>
                 <div className="flex mb2">
                     <img src="https://unsplash.it/400/266?image=431" className="small-image" alt=""/>
