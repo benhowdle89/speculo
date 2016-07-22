@@ -1,19 +1,64 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <link href="https://npmcdn.com/basscss@8.0.1/css/basscss.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="/dist/fonts/font.css">
-        <style>
-            .layouts {
-                font-family: "BLOKKNeue-Regular", serif
-            }
-        </style>
-    </head>
-    <body>
-        <div id="app">
 
-        </div>
-        <script src="dist/js/bundle.js"></script>
-    </body>
+<head>
+    <meta charset="utf-8">
+    <link href="https://npmcdn.com/basscss@8.0.1/css/basscss.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/dist/fonts/font.css">
+    <style>
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        .layouts {
+            font-family: "BLOKKNeue-Regular", serif;
+            line-height: 1.65;
+        }
+
+        .layouts .layout> div {
+            height: 100%;
+        }
+
+        .iphone-image {
+            max-width: 75px;
+        }
+
+        .small-image {
+            max-width: 75px;
+            max-height: 50px;
+        }
+
+        .large-image {
+            max-width: 200px;
+            max-height: 133px;
+        }
+
+        .logo {
+            max-width: 30px;
+            max-height: 30px;
+        }
+
+        .layouts h2 {
+            font-size: 12px;
+        }
+
+        .layouts h3 {
+            font-size: 10px;
+        }
+
+        .layouts p {
+            font-size: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+
+    </div>
+    <script src="dist/js/bundle.js"></script>
+</body>
+
 </html>

@@ -1,5 +1,5 @@
 const initialState = {
-    numberOfLayouts: 3
+    numberOfLayouts: 6
 }
 
 export default function layoutsState(state = initialState) {
