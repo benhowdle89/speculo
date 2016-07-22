@@ -20634,7 +20634,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var styles = {
     header: {
-        boxShadow: '1px 0 1px rgba(5,30,50,.2)'
+        boxShadow: '1px 0 1px rgba(5,30,50,.2)',
+        height: '100vh'
     }
 };
 
@@ -20644,7 +20645,7 @@ var Header = function Header(_ref) {
 
     return _react2.default.createElement(
         'header',
-        { className: 'col-2', style: styles.header },
+        { className: 'col-2 fixed', style: styles.header },
         _react2.default.createElement(_colourPickers2.default, { onColourChange: onColourChange, palette: palette })
     );
 };
