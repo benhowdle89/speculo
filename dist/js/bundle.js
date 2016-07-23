@@ -43709,6 +43709,7 @@ exports.maximiseLayout = maximiseLayout;
 exports.minimiseLayout = minimiseLayout;
 exports.toggleSidebar = toggleSidebar;
 exports.toggleHelp = toggleHelp;
+exports.toggleExport = toggleExport;
 
 var _actionTypes = require('../constants/action-types');
 
@@ -43738,6 +43739,12 @@ function toggleSidebar() {
 function toggleHelp() {
     return {
         type: types.TOGGLE_HELP
+    };
+}
+
+function toggleExport() {
+    return {
+        type: types.TOGGLE_EXPORT
     };
 }
 
@@ -43907,7 +43914,75 @@ var ColourPickers = function ColourPickers(_ref) {
 
 exports.default = ColourPickers;
 
-},{"contrast":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/contrast/index.js","react":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/react.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/header.jsx":[function(require,module,exports){
+},{"contrast":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/contrast/index.js","react":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/react.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/export.jsx":[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactModalDialog = require('react-modal-dialog');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var styles = {
+    exportContainer: {
+        width: '700px'
+    },
+    exportCSS: {
+        height: '300px',
+        width: '95%'
+    }
+};
+
+var getPaletteCSS = function getPaletteCSS(palette) {
+    return Object.keys(palette).map(function (colour) {
+        return '.' + colour + ' {\n    background-color: ' + palette[colour] + ';\n}\n';
+    }).join('');
+};
+
+var Export = function Export(_ref) {
+    var palette = _ref.palette;
+    var toggleExport = _ref.toggleExport;
+
+    return _react2.default.createElement(
+        _reactModalDialog.ModalContainer,
+        { onClose: toggleExport },
+        _react2.default.createElement(
+            _reactModalDialog.ModalDialog,
+            { onClose: toggleExport, style: styles.exportContainer },
+            _react2.default.createElement(
+                'h2',
+                { style: styles.heading, className: 'mb3 border-bottom pb2' },
+                'Export your palette'
+            ),
+            _react2.default.createElement(
+                'p',
+                { className: 'bold mb2' },
+                'CSS ',
+                _react2.default.createElement(
+                    'span',
+                    { className: 'italic', style: { fontSize: '12px' } },
+                    '(click to select)'
+                )
+            ),
+            _react2.default.createElement('textarea', { onClick: function onClick(_ref2) {
+                    var target = _ref2.target;
+
+                    target.focus();
+                    target.select();
+                }, readOnly: true, className: 'border p1', value: getPaletteCSS(palette), style: styles.exportCSS })
+        )
+    );
+};
+
+exports.default = Export;
+
+},{"react":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/react.js","react-modal-dialog":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react-modal-dialog/lib/index.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/header.jsx":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -43969,6 +44044,18 @@ var styles = {
         width: '16px',
         height: '16px',
         borderRadius: '4px'
+    },
+    exportIcon: {
+        fontSize: '26px',
+        color: '#55687c',
+        position: 'relative',
+        top: '1px',
+        cursor: 'pointer'
+    },
+    author: {
+        position: 'absolute',
+        bottom: '20px',
+        right: '16px'
     }
 };
 
@@ -43978,6 +44065,7 @@ var Header = function Header(_ref) {
     var toggleSidebar = _ref.toggleSidebar;
     var sidebarExpanded = _ref.sidebarExpanded;
     var toggleHelp = _ref.toggleHelp;
+    var toggleExport = _ref.toggleExport;
 
     if (!sidebarExpanded) {
         return _react2.default.createElement(
@@ -44001,11 +44089,22 @@ var Header = function Header(_ref) {
         _react2.default.createElement(
             'div',
             { className: 'flex header-hero p2 border-bottom' },
-            _react2.default.createElement('i', { className: 'fa fa-question-circle', style: styles.helpIcon, onClick: toggleHelp }),
+            _react2.default.createElement('i', { className: 'fa fa-question-circle mr2', style: styles.helpIcon, onClick: toggleHelp }),
+            _react2.default.createElement('i', { style: styles.exportIcon, className: 'fa fa-link', onClick: toggleExport }),
             _react2.default.createElement(_logo2.default, null)
         ),
         _react2.default.createElement(_colourPickers2.default, { onColourChange: onColourChange, palette: palette }),
-        _react2.default.createElement('i', { className: 'fa fa-chevron-circle-left', style: styles.contractIcon, onClick: toggleSidebar })
+        _react2.default.createElement('i', { className: 'fa fa-chevron-circle-left', style: styles.contractIcon, onClick: toggleSidebar }),
+        _react2.default.createElement(
+            'p',
+            { className: '', style: styles.author },
+            'Made by ',
+            _react2.default.createElement(
+                'a',
+                { className: 'text-decoration-none bold', href: 'http://benhowdle.im' },
+                'Ben Howdle'
+            )
+        )
     );
 };
 
@@ -44044,6 +44143,9 @@ var styles = {
         textAlign: 'center'
     },
     helpIcon: {
+        fontSize: '24px'
+    },
+    twitterIcon: {
         fontSize: '24px'
     }
 };
@@ -44090,7 +44192,7 @@ var Help = function Help(_ref) {
                     _react2.default.createElement(
                         'p',
                         { style: styles.helpText },
-                        'Click any of the layouts to focus on one at a time.'
+                        'Click on one of the layouts to zoom in. Focus.'
                     )
                 ),
                 _react2.default.createElement(
@@ -44147,13 +44249,27 @@ var Help = function Help(_ref) {
                     _react2.default.createElement(
                         'div',
                         { className: 'mb1' },
-                        _react2.default.createElement('i', { style: styles.helpIcon, className: 'fa fa-paint-brush' })
+                        _react2.default.createElement('i', { style: styles.helpIcon, className: 'fa fa-thumbs-up' })
                     ),
                     _react2.default.createElement(
                         'p',
                         { style: styles.helpText },
-                        'Change the colours on the left hand side, watch the layouts automatically update.'
+                        'I hope you find Speculo to be useful and it provides you with a slick way to rapidly visualise your colour palettes.'
                     )
+                )
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'flex mt2 border-top pt2 items-center justify-center' },
+                _react2.default.createElement(
+                    'p',
+                    { className: 'mr1' },
+                    'Share Speculo on'
+                ),
+                _react2.default.createElement(
+                    'a',
+                    { className: 'twitter-share-button', target: '_BLANK', href: 'https://twitter.com/intent/tweet?text=Colour palette visualiser&url=http://speculo.co' },
+                    _react2.default.createElement('i', { className: 'fa fa-twitter', style: styles.twitterIcon })
                 )
             )
         )
@@ -45139,6 +45255,7 @@ var MAXIMISE_LAYOUT = exports.MAXIMISE_LAYOUT = 'MAXIMISE_LAYOUT';
 var MINIMISE_LAYOUT = exports.MINIMISE_LAYOUT = 'MINIMISE_LAYOUT';
 var TOGGLE_SIDEBAR = exports.TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
 var TOGGLE_HELP = exports.TOGGLE_HELP = 'TOGGLE_HELP';
+var TOGGLE_EXPORT = exports.TOGGLE_EXPORT = 'TOGGLE_EXPORT';
 
 },{}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/containers/index.jsx":[function(require,module,exports){
 'use strict';
@@ -45177,6 +45294,10 @@ var _help = require('./../components/help.jsx');
 
 var _help2 = _interopRequireDefault(_help);
 
+var _export = require('./../components/export.jsx');
+
+var _export2 = _interopRequireDefault(_export);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -45203,11 +45324,16 @@ var Index = function (_React$Component) {
                 'div',
                 { className: 'flex' },
                 this.props.layoutsState.helpExpanded && _react2.default.createElement(_help2.default, { toggleHelp: this.props.layoutActions.toggleHelp }),
+                this.props.layoutsState.exportExpanded && _react2.default.createElement(_export2.default, {
+                    toggleExport: this.props.layoutActions.toggleExport,
+                    palette: this.props.paletteState
+                }),
                 _react2.default.createElement(_header2.default, {
                     onColourChange: this.props.paletteActions.changeColour,
                     palette: this.props.paletteState,
                     toggleSidebar: this.props.layoutActions.toggleSidebar,
                     toggleHelp: this.props.layoutActions.toggleHelp,
+                    toggleExport: this.props.layoutActions.toggleExport,
                     sidebarExpanded: this.props.layoutsState.sidebarExpanded
                 }),
                 _react2.default.createElement(_layouts2.default, {
@@ -45248,7 +45374,7 @@ function mapDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Index);
 
-},{"./../actions/layout":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/actions/layout.js","./../actions/palette":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/actions/palette.js","./../components/header.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/header.jsx","./../components/help.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/help.jsx","./../components/layouts.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts.jsx","react":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/react.js","react-redux":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react-redux/lib/index.js","redux":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/redux/lib/index.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/main.js":[function(require,module,exports){
+},{"./../actions/layout":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/actions/layout.js","./../actions/palette":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/actions/palette.js","./../components/export.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/export.jsx","./../components/header.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/header.jsx","./../components/help.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/help.jsx","./../components/layouts.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts.jsx","react":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/react.js","react-redux":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react-redux/lib/index.js","redux":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/redux/lib/index.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/main.js":[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -45305,7 +45431,8 @@ var initialState = {
     numberOfLayouts: 6,
     maximisedLayout: null,
     sidebarExpanded: true,
-    helpExpanded: false
+    helpExpanded: false,
+    exportExpanded: false
 };
 
 function layoutsState() {
@@ -45328,6 +45455,10 @@ function layoutsState() {
         case _actionTypes.TOGGLE_HELP:
             return Object.assign({}, state, {
                 helpExpanded: !state.helpExpanded
+            });
+        case _actionTypes.TOGGLE_EXPORT:
+            return Object.assign({}, state, {
+                exportExpanded: !state.exportExpanded
             });
         default:
             return state;

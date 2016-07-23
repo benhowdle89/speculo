@@ -20,6 +20,9 @@ const styles = {
     },
     helpIcon: {
         fontSize: '24px'
+    },
+    twitterIcon: {
+        fontSize: '24px'
     }
 }
 
@@ -39,7 +42,7 @@ const Help = ({ toggleHelp }) => {
                         <div className="mb1">
                             <i style={styles.helpIcon} className="fa fa-eye"></i>
                         </div>
-                        <p style={styles.helpText}>Click any of the layouts to focus on one at a time.</p>
+                        <p style={styles.helpText}>Click on one of the layouts to zoom in. Focus.</p>
                     </div>
                     <div className="flex flex-column items-center mb2" style={styles.helpItem}>
                         <div className="mb1">
@@ -61,10 +64,16 @@ const Help = ({ toggleHelp }) => {
                     </div>
                     <div className="flex flex-column items-center" style={styles.helpItem}>
                         <div className="mb1">
-                            <i style={styles.helpIcon} className="fa fa-paint-brush"></i>
+                            <i style={styles.helpIcon} className="fa fa-thumbs-up"></i>
                         </div>
-                        <p style={styles.helpText}>Change the colours on the left hand side, watch the layouts automatically update.</p>
+                        <p style={styles.helpText}>I hope you find Speculo to be useful and it provides you with a slick way to rapidly visualise your colour palettes.</p>
                     </div>
+                </div>
+                <div className="flex mt2 border-top pt2 items-center justify-center">
+                    <p className="mr1">Share Speculo on</p>
+                    <a className="twitter-share-button" target="_BLANK" href="https://twitter.com/intent/tweet?text=Colour palette visualiser&url=http://speculo.co">
+                        <i className="fa fa-twitter" style={styles.twitterIcon}></i>
+                    </a>
                 </div>
             </ModalDialog>
         </ModalContainer>

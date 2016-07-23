@@ -44,10 +44,22 @@ const styles = {
         width: '16px',
         height: '16px',
         borderRadius: '4px'
+    },
+    exportIcon: {
+        fontSize: '26px',
+        color: '#55687c',
+        position: 'relative',
+        top: '1px',
+        cursor: 'pointer'
+    },
+    author: {
+        position: 'absolute',
+        bottom: '20px',
+        right: '16px'
     }
 }
 
-const Header = ({ onColourChange, palette, toggleSidebar, sidebarExpanded, toggleHelp }) => {
+const Header = ({ onColourChange, palette, toggleSidebar, sidebarExpanded, toggleHelp, toggleExport }) => {
     if(!sidebarExpanded){
         return (
             <div className="contracted-header" onClick={toggleSidebar} style={styles.contractedHeader}>
@@ -68,11 +80,13 @@ const Header = ({ onColourChange, palette, toggleSidebar, sidebarExpanded, toggl
     return (
         <header className="col-2 fixed" style={styles.header}>
             <div className="flex header-hero p2 border-bottom">
-                <i className="fa fa-question-circle" style={styles.helpIcon} onClick={toggleHelp}></i>
+                <i className="fa fa-question-circle mr2" style={styles.helpIcon} onClick={toggleHelp}></i>
+                <i style={styles.exportIcon} className="fa fa-link" onClick={toggleExport}></i>
                 <Logo />
             </div>
             <ColourPickers onColourChange={onColourChange} palette={palette} />
             <i className="fa fa-chevron-circle-left" style={styles.contractIcon} onClick={toggleSidebar}></i>
+            <p className="" style={styles.author}>Made by <a className="text-decoration-none bold" href="http://benhowdle.im">Ben Howdle</a></p>
         </header>
     )
 }

@@ -24,3 +24,9 @@ export function toggleHelp() {
         type: types.TOGGLE_HELP
     }
 }
+
+export function toggleExport() {
+    return {
+        type: types.TOGGLE_EXPORT
+    }
+}

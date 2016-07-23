@@ -8,6 +8,7 @@ import * as layoutActions from './../actions/layout'
 import Header from './../components/header.jsx'
 import Layouts from './../components/layouts.jsx'
 import Help from './../components/help.jsx'
+import Export from './../components/export.jsx'
 
 class Index extends React.Component {
 
@@ -17,11 +18,18 @@ class Index extends React.Component {
                 {(this.props.layoutsState.helpExpanded) && (
                     <Help toggleHelp={this.props.layoutActions.toggleHelp} />
                 )}
+                {(this.props.layoutsState.exportExpanded) && (
+                    <Export
+                        toggleExport={this.props.layoutActions.toggleExport}
+                        palette={this.props.paletteState}
+                    />
+                )}
                 <Header
                     onColourChange={this.props.paletteActions.changeColour}
                     palette={this.props.paletteState}
                     toggleSidebar={this.props.layoutActions.toggleSidebar}
                     toggleHelp={this.props.layoutActions.toggleHelp}
+                    toggleExport={this.props.layoutActions.toggleExport}
                     sidebarExpanded={this.props.layoutsState.sidebarExpanded}
                 />
                 <Layouts
