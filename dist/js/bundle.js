@@ -43941,7 +43941,8 @@ var styles = {
 
 var getPaletteCSS = function getPaletteCSS(palette) {
     return Object.keys(palette).map(function (colour) {
-        return '.' + colour + ' {\n    background-color: ' + palette[colour] + ';\n}\n';
+        var key = colour.match(/Background/) ? 'background-color' : 'color';
+        return '.' + colour + ' {\n    ' + key + ': ' + palette[colour] + ';\n}\n';
     }).join('');
 };
 

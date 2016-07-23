@@ -13,8 +13,9 @@ const styles = {
 
 const getPaletteCSS = (palette) => {
     return Object.keys(palette).map(colour => {
+        let key = colour.match(/Background/) ? 'background-color' : 'color'
         return `.${colour} {
-    background-color: ${palette[colour]};
+    ${key}: ${palette[colour]};
 }
 `
     }).join('')
