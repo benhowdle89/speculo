@@ -1,6 +1,7 @@
 import React from 'react'
 
 import LayoutsObject from './layouts/'
+import Help from './help.jsx'
 
 const styles = {
     layouts: {

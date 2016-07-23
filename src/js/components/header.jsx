@@ -11,7 +11,7 @@ const styles = {
     },
     contractedHeader: {
         width: '12px',
-        height: '90vh',
+        height: '95vh',
         backgroundColor: '#25354b',
         cursor: 'pointer',
         borderTopRightRadius: '4px',
@@ -29,12 +29,16 @@ const styles = {
     },
     helpIcon: {
         fontSize: '26px',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        color: '#55687c'
     },
     contractIcon: {
-        color: '#25354b',
+        color: '#55687c',
         fontSize: '26px',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        position: 'absolute',
+        bottom: '16px',
+        left: '16px'
     },
     colourPreview: {
         width: '16px',
@@ -43,7 +47,7 @@ const styles = {
     }
 }
 
-const Header = ({ onColourChange, palette, toggleSidebar, sidebarExpanded }) => {
+const Header = ({ onColourChange, palette, toggleSidebar, sidebarExpanded, toggleHelp }) => {
     if(!sidebarExpanded){
         return (
             <div className="contracted-header" onClick={toggleSidebar} style={styles.contractedHeader}>
@@ -64,11 +68,11 @@ const Header = ({ onColourChange, palette, toggleSidebar, sidebarExpanded }) => 
     return (
         <header className="col-2 fixed" style={styles.header}>
             <div className="flex header-hero p2 border-bottom">
-                <i className="fa fa-question-circle" style={styles.helpIcon}></i>
+                <i className="fa fa-question-circle" style={styles.helpIcon} onClick={toggleHelp}></i>
                 <Logo />
             </div>
             <ColourPickers onColourChange={onColourChange} palette={palette} />
-            <i className="fa fa-chevron-circle-left mt2 p2" style={styles.contractIcon} onClick={toggleSidebar}></i>
+            <i className="fa fa-chevron-circle-left" style={styles.contractIcon} onClick={toggleSidebar}></i>
         </header>
     )
 }

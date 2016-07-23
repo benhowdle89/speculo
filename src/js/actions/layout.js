@@ -18,3 +18,9 @@ export function toggleSidebar() {
         type: types.TOGGLE_SIDEBAR
     }
 }
+
+export function toggleHelp() {
+    return {
+        type: types.TOGGLE_HELP
+    }
+}

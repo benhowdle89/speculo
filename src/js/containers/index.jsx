@@ -7,15 +7,21 @@ import * as layoutActions from './../actions/layout'
 
 import Header from './../components/header.jsx'
 import Layouts from './../components/layouts.jsx'
+import Help from './../components/help.jsx'
 
 class Index extends React.Component {
+
     render() {
         return (
             <div className="flex">
+                {(this.props.layoutsState.helpExpanded) && (
+                    <Help toggleHelp={this.props.layoutActions.toggleHelp} />
+                )}
                 <Header
                     onColourChange={this.props.paletteActions.changeColour}
                     palette={this.props.paletteState}
                     toggleSidebar={this.props.layoutActions.toggleSidebar}
+                    toggleHelp={this.props.layoutActions.toggleHelp}
                     sidebarExpanded={this.props.layoutsState.sidebarExpanded}
                 />
                 <Layouts
