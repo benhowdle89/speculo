@@ -4,7 +4,8 @@ import LayoutsObject from './layouts/'
 
 const styles = {
     layouts: {
-        textAlign: 'center'
+        textAlign: 'center',
+        marginLeft: '16.666667%'
     },
     layout: {
         width: 'calc(100% * (1/3) - 10px - 1px)',
@@ -12,15 +13,20 @@ const styles = {
     }
 }
 
-const Layouts = ({ palette, numberOfLayouts, maximiseLayout, minimiseLayout, maximisedLayout }) => {
+const Layouts = ({ palette, numberOfLayouts, maximiseLayout, minimiseLayout, maximisedLayout, sidebarExpanded }) => {
     let Layout
     if(maximisedLayout !== null){
         Layout = LayoutsObject[`layout${maximisedLayout}`]
     }
     return (
-        <div className={`col-10 flex layouts flex-wrap justify-between p2 ${!!(maximisedLayout !== null) && 'maximised'}`} style={styles.layouts}>
+        <div
+            className={`${sidebarExpanded ? 'col-10' : 'col-12'} flex layouts flex-wrap justify-between p2 ${!!(maximisedLayout !== null) && 'maximised'}`}
+            style={Object.assign({}, styles.layouts, {
+                [!sidebarExpanded ? 'marginLeft' : '']: (!sidebarExpanded) ? '0' : ''
+            })}
+        >
             {(maximisedLayout !== null) && (
-                <div className="layout col-12 mb2 pb2" style={Object.assign({}, styles.layout, {
+                <div className="layout col-12 mb2" style={Object.assign({}, styles.layout, {
                         width: '100%',
                         overflow: 'auto',
                         cursor: 'zoom-out'
@@ -31,7 +37,7 @@ const Layouts = ({ palette, numberOfLayouts, maximiseLayout, minimiseLayout, max
             {(maximisedLayout == null) && (
                 Array.from({length: numberOfLayouts}).map((layout, index) => {
                     Layout = LayoutsObject[`layout${index}`]
-                    return <div className="layout col-4 mb2 pb2" style={Object.assign({}, styles.layout, {
+                    return <div className="layout col-4 mb2" style={Object.assign({}, styles.layout, {
                             cursor: 'zoom-in'
                         })} onClick={() => maximiseLayout(index)}>
                         <Layout palette={palette} />

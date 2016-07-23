@@ -11,7 +11,7 @@ const Layout5 = ({ palette }) => {
         <div style={Object.assign({}, styles.layout, {
                 backgroundColor: palette.bodyBackgroundColour
             })}>
-            <div className="hero border-bottom p2 flex items-center">
+            <div className="hero border-bottom p2 flex items-center justify-center">
                 <div className="mr1">
                     <h2 style={{
                             color: palette.headingTextColour
@@ -29,7 +29,7 @@ const Layout5 = ({ palette }) => {
                     <img className="large-image" src="https://unsplash.it/400/266?image=407" alt=""/>
                 </div>
             </div>
-            <div className="hero border-top p2 flex items-center">
+            <div className="hero border-top p2 flex items-center justify-center">
                 <div className="mr1">
                     <img className="large-image" src="https://unsplash.it/400/266?image=407" alt=""/>
                 </div>

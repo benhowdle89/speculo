@@ -12,3 +12,9 @@ export function minimiseLayout() {
         type: types.MINIMISE_LAYOUT
     }
 }
+
+export function toggleSidebar() {
+    return {
+        type: types.TOGGLE_SIDEBAR
+    }
+}

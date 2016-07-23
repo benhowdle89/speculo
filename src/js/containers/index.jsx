@@ -15,6 +15,8 @@ class Index extends React.Component {
                 <Header
                     onColourChange={this.props.paletteActions.changeColour}
                     palette={this.props.paletteState}
+                    toggleSidebar={this.props.layoutActions.toggleSidebar}
+                    sidebarExpanded={this.props.layoutsState.sidebarExpanded}
                 />
                 <Layouts
                     maximisedLayout={this.props.layoutsState.maximisedLayout}
@@ -22,6 +24,7 @@ class Index extends React.Component {
                     minimiseLayout={this.props.layoutActions.minimiseLayout}
                     palette={this.props.paletteState}
                     numberOfLayouts={this.props.layoutsState.numberOfLayouts}
+                    sidebarExpanded={this.props.layoutsState.sidebarExpanded}
                 />
             </div>
         )

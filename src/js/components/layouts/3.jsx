@@ -12,7 +12,7 @@ const Layout3 = ({ palette }) => {
             <div className="flex border-bottom py1">
                 <img src="/dist/images/logo.png" className="pl1 logo" alt=""/>
             </div>
-            <div className="hero border-bottom p2 flex items-center">
+            <div className="hero border-bottom p2 flex items-center justify-center">
                 <div className="mr1">
                     <img className="large-image" src="https://unsplash.it/400/266?image=407" alt=""/>
                 </div>

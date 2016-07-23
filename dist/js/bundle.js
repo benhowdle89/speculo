@@ -20694,6 +20694,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.maximiseLayout = maximiseLayout;
 exports.minimiseLayout = minimiseLayout;
+exports.toggleSidebar = toggleSidebar;
 
 var _actionTypes = require('../constants/action-types');
 
@@ -20711,6 +20712,12 @@ function maximiseLayout(index) {
 function minimiseLayout() {
     return {
         type: types.MINIMISE_LAYOUT
+    };
+}
+
+function toggleSidebar() {
+    return {
+        type: types.TOGGLE_SIDEBAR
     };
 }
 
@@ -20895,29 +20902,91 @@ var _colourPickers = require('./colour-pickers.jsx');
 
 var _colourPickers2 = _interopRequireDefault(_colourPickers);
 
+var _logo = require('./logo.jsx');
+
+var _logo2 = _interopRequireDefault(_logo);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var styles = {
     header: {
         boxShadow: '1px 0 1px rgba(5,30,50,.2)',
-        height: '100vh'
+        height: '100vh',
+        backgroundColor: '#ffffff'
+    },
+    contractedHeader: {
+        width: '12px',
+        height: '90vh',
+        backgroundColor: '#25354b',
+        cursor: 'pointer',
+        borderTopRightRadius: '4px',
+        borderBottomRightRadius: '4px',
+        transition: 'padding .2s',
+        overflow: 'hidden',
+        marginTop: '16px'
+    },
+    expand: {
+        width: '100%'
+    },
+    expandIcon: {
+        color: '#ffffff',
+        fontSize: '26px'
+    },
+    helpIcon: {
+        fontSize: '26px',
+        cursor: 'pointer'
+    },
+    contractIcon: {
+        color: '#25354b',
+        fontSize: '26px',
+        cursor: 'pointer'
+    },
+    colourPreview: {
+        width: '16px',
+        height: '16px',
+        borderRadius: '4px'
     }
 };
 
 var Header = function Header(_ref) {
     var onColourChange = _ref.onColourChange;
     var palette = _ref.palette;
+    var toggleSidebar = _ref.toggleSidebar;
+    var sidebarExpanded = _ref.sidebarExpanded;
 
+    if (!sidebarExpanded) {
+        return _react2.default.createElement(
+            'div',
+            { className: 'contracted-header', onClick: toggleSidebar, style: styles.contractedHeader },
+            _react2.default.createElement(
+                'div',
+                { className: 'flex flex-column p3 items-center justify-center', style: styles.expand },
+                _react2.default.createElement('i', { className: 'fa fa-chevron-circle-right mb4', style: styles.expandIcon }),
+                Object.keys(palette).map(function (colour) {
+                    return _react2.default.createElement('div', { className: 'mb1', style: Object.assign({}, styles.colourPreview, {
+                            backgroundColor: palette[colour]
+                        }) });
+                })
+            )
+        );
+    }
     return _react2.default.createElement(
         'header',
         { className: 'col-2 fixed', style: styles.header },
-        _react2.default.createElement(_colourPickers2.default, { onColourChange: onColourChange, palette: palette })
+        _react2.default.createElement(
+            'div',
+            { className: 'flex header-hero p2 border-bottom' },
+            _react2.default.createElement('i', { className: 'fa fa-question-circle', style: styles.helpIcon }),
+            _react2.default.createElement(_logo2.default, null)
+        ),
+        _react2.default.createElement(_colourPickers2.default, { onColourChange: onColourChange, palette: palette }),
+        _react2.default.createElement('i', { className: 'fa fa-chevron-circle-left mt2 p2', style: styles.contractIcon, onClick: toggleSidebar })
     );
 };
 
 exports.default = Header;
 
-},{"./colour-pickers.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/colour-pickers.jsx","react":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/react.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts.jsx":[function(require,module,exports){
+},{"./colour-pickers.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/colour-pickers.jsx","./logo.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/logo.jsx","react":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/react.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts.jsx":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20934,9 +21003,12 @@ var _layouts2 = _interopRequireDefault(_layouts);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var styles = {
     layouts: {
-        textAlign: 'center'
+        textAlign: 'center',
+        marginLeft: '16.666667%'
     },
     layout: {
         width: 'calc(100% * (1/3) - 10px - 1px)',
@@ -20950,6 +21022,7 @@ var Layouts = function Layouts(_ref) {
     var maximiseLayout = _ref.maximiseLayout;
     var minimiseLayout = _ref.minimiseLayout;
     var maximisedLayout = _ref.maximisedLayout;
+    var sidebarExpanded = _ref.sidebarExpanded;
 
     var Layout = void 0;
     if (maximisedLayout !== null) {
@@ -20957,10 +21030,13 @@ var Layouts = function Layouts(_ref) {
     }
     return _react2.default.createElement(
         'div',
-        { className: 'col-10 flex layouts flex-wrap justify-between p2 ' + (!!(maximisedLayout !== null) && 'maximised'), style: styles.layouts },
+        {
+            className: (sidebarExpanded ? 'col-10' : 'col-12') + ' flex layouts flex-wrap justify-between p2 ' + (!!(maximisedLayout !== null) && 'maximised'),
+            style: Object.assign({}, styles.layouts, _defineProperty({}, !sidebarExpanded ? 'marginLeft' : '', !sidebarExpanded ? '0' : ''))
+        },
         maximisedLayout !== null && _react2.default.createElement(
             'div',
-            { className: 'layout col-12 mb2 pb2', style: Object.assign({}, styles.layout, {
+            { className: 'layout col-12 mb2', style: Object.assign({}, styles.layout, {
                     width: '100%',
                     overflow: 'auto',
                     cursor: 'zoom-out'
@@ -20973,7 +21049,7 @@ var Layouts = function Layouts(_ref) {
             Layout = _layouts2.default['layout' + index];
             return _react2.default.createElement(
                 'div',
-                { className: 'layout col-4 mb2 pb2', style: Object.assign({}, styles.layout, {
+                { className: 'layout col-4 mb2', style: Object.assign({}, styles.layout, {
                         cursor: 'zoom-in'
                     }), onClick: function onClick() {
                         return maximiseLayout(index);
@@ -21452,7 +21528,7 @@ var Layout3 = function Layout3(_ref) {
         ),
         _react2.default.createElement(
             "div",
-            { className: "hero border-bottom p2 flex items-center" },
+            { className: "hero border-bottom p2 flex items-center justify-center" },
             _react2.default.createElement(
                 "div",
                 { className: "mr1" },
@@ -21622,7 +21698,7 @@ var Layout4 = function Layout4(_ref) {
                 ),
                 _react2.default.createElement(
                     "div",
-                    { className: "border py1 px2 my1" },
+                    { className: "border py1 px2 my1 mx2" },
                     _react2.default.createElement(
                         "h3",
                         null,
@@ -21710,7 +21786,7 @@ var Layout5 = function Layout5(_ref) {
             }) },
         _react2.default.createElement(
             "div",
-            { className: "hero border-bottom p2 flex items-center" },
+            { className: "hero border-bottom p2 flex items-center justify-center" },
             _react2.default.createElement(
                 "div",
                 { className: "mr1" },
@@ -21750,7 +21826,7 @@ var Layout5 = function Layout5(_ref) {
         ),
         _react2.default.createElement(
             "div",
-            { className: "hero border-top p2 flex items-center" },
+            { className: "hero border-top p2 flex items-center justify-center" },
             _react2.default.createElement(
                 "div",
                 { className: "mr1" },
@@ -21837,7 +21913,42 @@ var layouts = {
 
 exports.default = layouts;
 
-},{"./0.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts/0.jsx","./1.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts/1.jsx","./2.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts/2.jsx","./3.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts/3.jsx","./4.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts/4.jsx","./5.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts/5.jsx"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/constants/action-types.js":[function(require,module,exports){
+},{"./0.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts/0.jsx","./1.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts/1.jsx","./2.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts/2.jsx","./3.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts/3.jsx","./4.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts/4.jsx","./5.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts/5.jsx"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/logo.jsx":[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var styles = {
+    logo: {
+        fontFamily: "'Montserrat', sans-serif",
+        color: '#1c273a',
+        fontSize: '20px'
+    }
+};
+
+var Logo = function Logo() {
+    return _react2.default.createElement(
+        'div',
+        { className: 'flex-auto' },
+        _react2.default.createElement(
+            'p',
+            { style: styles.logo, className: 'right' },
+            'Speculo'
+        )
+    );
+};
+
+exports.default = Logo;
+
+},{"react":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/react.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/constants/action-types.js":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21846,6 +21957,7 @@ Object.defineProperty(exports, "__esModule", {
 var COLOUR_CHANGE = exports.COLOUR_CHANGE = 'COLOUR_CHANGE';
 var MAXIMISE_LAYOUT = exports.MAXIMISE_LAYOUT = 'MAXIMISE_LAYOUT';
 var MINIMISE_LAYOUT = exports.MINIMISE_LAYOUT = 'MINIMISE_LAYOUT';
+var TOGGLE_SIDEBAR = exports.TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
 
 },{}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/containers/index.jsx":[function(require,module,exports){
 'use strict';
@@ -21907,14 +22019,17 @@ var Index = function (_React$Component) {
                 { className: 'flex' },
                 _react2.default.createElement(_header2.default, {
                     onColourChange: this.props.paletteActions.changeColour,
-                    palette: this.props.paletteState
+                    palette: this.props.paletteState,
+                    toggleSidebar: this.props.layoutActions.toggleSidebar,
+                    sidebarExpanded: this.props.layoutsState.sidebarExpanded
                 }),
                 _react2.default.createElement(_layouts2.default, {
                     maximisedLayout: this.props.layoutsState.maximisedLayout,
                     maximiseLayout: this.props.layoutActions.maximiseLayout,
                     minimiseLayout: this.props.layoutActions.minimiseLayout,
                     palette: this.props.paletteState,
-                    numberOfLayouts: this.props.layoutsState.numberOfLayouts
+                    numberOfLayouts: this.props.layoutsState.numberOfLayouts,
+                    sidebarExpanded: this.props.layoutsState.sidebarExpanded
                 })
             );
         }
@@ -22001,7 +22116,8 @@ var _actionTypes = require('../constants/action-types');
 
 var initialState = {
     numberOfLayouts: 6,
-    maximisedLayout: null
+    maximisedLayout: null,
+    sidebarExpanded: true
 };
 
 function layoutsState() {
@@ -22016,6 +22132,10 @@ function layoutsState() {
         case _actionTypes.MINIMISE_LAYOUT:
             return Object.assign({}, state, {
                 maximisedLayout: null
+            });
+        case _actionTypes.TOGGLE_SIDEBAR:
+            return Object.assign({}, state, {
+                sidebarExpanded: !state.sidebarExpanded
             });
         default:
             return state;

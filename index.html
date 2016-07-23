@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <script src="https://use.typekit.net/rpw8olm.js"></script>
     <script>try{Typekit.load({ async: true });}catch(e){}</script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:700" rel="stylesheet">
     <link href="https://npmcdn.com/basscss@8.0.1/css/basscss.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/dist/fonts/font.css">
     <style>
@@ -22,10 +24,11 @@
 
         body {
             font-family: "museo-sans",sans-serif;
+            background-color: #f5f7f9;
         }
 
-        .layouts {
-            margin-left: 16.666667%;
+        .contracted-header:hover {
+            padding-right: 68px !important;
         }
 
         .layouts .layout> div {
@@ -33,7 +36,7 @@
         }
 
         .layouts * {
-            border-color: #55687c;
+            border-color: #E7E9EC;
         }
 
         .layouts {
@@ -77,8 +80,8 @@
         }
 
         .maximised .small-image {
-            max-width: 200px;
-            max-height: 150px;
+            max-width: 300px;
+            max-height: 200px;
         }
 
         .maximised.layouts h2 {
@@ -100,6 +103,15 @@
         .maximised.layouts .logo {
             max-width: 100px;
             max-height: 100px;
+        }
+
+        .maximised.layouts .large-image {
+            max-width: 400px;
+            max-height: 266px;
+        }
+
+        .header-hero {
+            border-bottom-color: #E7E9EC;
         }
     </style>
 </head>
