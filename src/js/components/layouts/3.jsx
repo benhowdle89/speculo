@@ -23,7 +23,7 @@ const Layout3 = ({ palette }) => {
                     <h3 style={{
                             color: palette.secondaryHeadingTextColour
                         }}>Some more byline text</h3>
-                    <div className="button primary border py0 px2 self-center col-6 mx-auto mt1" style={{
+                    <div className="button primary border py1 px2 self-center col-6 mx-auto mt1" style={{
                             backgroundColor: palette.primaryButtonBackgroundColour
                         }}><p style={{
                             color: palette.primaryButtonTextColour
@@ -50,7 +50,7 @@ const Layout3 = ({ palette }) => {
                         }}>Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. </p>
                 </div>
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center pt2">
                 <p style={{
                         color: palette.bodyTextColour
                     }}>Some footer text.</p>

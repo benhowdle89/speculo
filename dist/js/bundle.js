@@ -19808,7 +19808,236 @@ module.exports = validateDOMNesting;
 
 module.exports = require('./lib/React');
 
-},{"./lib/React":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/lib/React.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/redux/lib/applyMiddleware.js":[function(require,module,exports){
+},{"./lib/React":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/lib/React.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/redux-logger/lib/index.js":[function(require,module,exports){
+"use strict";
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+
+var repeat = function repeat(str, times) {
+  return new Array(times + 1).join(str);
+};
+var pad = function pad(num, maxLength) {
+  return repeat("0", maxLength - num.toString().length) + num;
+};
+var formatTime = function formatTime(time) {
+  return "@ " + pad(time.getHours(), 2) + ":" + pad(time.getMinutes(), 2) + ":" + pad(time.getSeconds(), 2) + "." + pad(time.getMilliseconds(), 3);
+};
+
+// Use the new performance api to get better precision if available
+var timer = typeof performance !== "undefined" && typeof performance.now === "function" ? performance : Date;
+
+/**
+ * parse the level option of createLogger
+ *
+ * @property {string | function | object} level - console[level]
+ * @property {object} action
+ * @property {array} payload
+ * @property {string} type
+ */
+
+function getLogLevel(level, action, payload, type) {
+  switch (typeof level === "undefined" ? "undefined" : _typeof(level)) {
+    case "object":
+      return typeof level[type] === "function" ? level[type].apply(level, _toConsumableArray(payload)) : level[type];
+    case "function":
+      return level(action);
+    default:
+      return level;
+  }
+}
+
+/**
+ * Creates logger with followed options
+ *
+ * @namespace
+ * @property {object} options - options for logger
+ * @property {string | function | object} options.level - console[level]
+ * @property {boolean} options.duration - print duration of each action?
+ * @property {boolean} options.timestamp - print timestamp with each action?
+ * @property {object} options.colors - custom colors
+ * @property {object} options.logger - implementation of the `console` API
+ * @property {boolean} options.logErrors - should errors in action execution be caught, logged, and re-thrown?
+ * @property {boolean} options.collapsed - is group collapsed?
+ * @property {boolean} options.predicate - condition which resolves logger behavior
+ * @property {function} options.stateTransformer - transform state before print
+ * @property {function} options.actionTransformer - transform action before print
+ * @property {function} options.errorTransformer - transform error before print
+ */
+
+function createLogger() {
+  var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+  var _options$level = options.level;
+  var level = _options$level === undefined ? "log" : _options$level;
+  var _options$logger = options.logger;
+  var logger = _options$logger === undefined ? console : _options$logger;
+  var _options$logErrors = options.logErrors;
+  var logErrors = _options$logErrors === undefined ? true : _options$logErrors;
+  var collapsed = options.collapsed;
+  var predicate = options.predicate;
+  var _options$duration = options.duration;
+  var duration = _options$duration === undefined ? false : _options$duration;
+  var _options$timestamp = options.timestamp;
+  var timestamp = _options$timestamp === undefined ? true : _options$timestamp;
+  var transformer = options.transformer;
+  var _options$stateTransfo = options.stateTransformer;
+  var // deprecated
+  stateTransformer = _options$stateTransfo === undefined ? function (state) {
+    return state;
+  } : _options$stateTransfo;
+  var _options$actionTransf = options.actionTransformer;
+  var actionTransformer = _options$actionTransf === undefined ? function (actn) {
+    return actn;
+  } : _options$actionTransf;
+  var _options$errorTransfo = options.errorTransformer;
+  var errorTransformer = _options$errorTransfo === undefined ? function (error) {
+    return error;
+  } : _options$errorTransfo;
+  var _options$colors = options.colors;
+  var colors = _options$colors === undefined ? {
+    title: function title() {
+      return "#000000";
+    },
+    prevState: function prevState() {
+      return "#9E9E9E";
+    },
+    action: function action() {
+      return "#03A9F4";
+    },
+    nextState: function nextState() {
+      return "#4CAF50";
+    },
+    error: function error() {
+      return "#F20404";
+    }
+  } : _options$colors;
+
+  // exit if console undefined
+
+  if (typeof logger === "undefined") {
+    return function () {
+      return function (next) {
+        return function (action) {
+          return next(action);
+        };
+      };
+    };
+  }
+
+  if (transformer) {
+    console.error("Option 'transformer' is deprecated, use stateTransformer instead");
+  }
+
+  var logBuffer = [];
+  function printBuffer() {
+    logBuffer.forEach(function (logEntry, key) {
+      var started = logEntry.started;
+      var startedTime = logEntry.startedTime;
+      var action = logEntry.action;
+      var prevState = logEntry.prevState;
+      var error = logEntry.error;
+      var took = logEntry.took;
+      var nextState = logEntry.nextState;
+
+      var nextEntry = logBuffer[key + 1];
+      if (nextEntry) {
+        nextState = nextEntry.prevState;
+        took = nextEntry.started - started;
+      }
+      // message
+      var formattedAction = actionTransformer(action);
+      var isCollapsed = typeof collapsed === "function" ? collapsed(function () {
+        return nextState;
+      }, action) : collapsed;
+
+      var formattedTime = formatTime(startedTime);
+      var titleCSS = colors.title ? "color: " + colors.title(formattedAction) + ";" : null;
+      var title = "action " + (timestamp ? formattedTime : "") + " " + formattedAction.type + " " + (duration ? "(in " + took.toFixed(2) + " ms)" : "");
+
+      // render
+      try {
+        if (isCollapsed) {
+          if (colors.title) logger.groupCollapsed("%c " + title, titleCSS);else logger.groupCollapsed(title);
+        } else {
+          if (colors.title) logger.group("%c " + title, titleCSS);else logger.group(title);
+        }
+      } catch (e) {
+        logger.log(title);
+      }
+
+      var prevStateLevel = getLogLevel(level, formattedAction, [prevState], "prevState");
+      var actionLevel = getLogLevel(level, formattedAction, [formattedAction], "action");
+      var errorLevel = getLogLevel(level, formattedAction, [error, prevState], "error");
+      var nextStateLevel = getLogLevel(level, formattedAction, [nextState], "nextState");
+
+      if (prevStateLevel) {
+        if (colors.prevState) logger[prevStateLevel]("%c prev state", "color: " + colors.prevState(prevState) + "; font-weight: bold", prevState);else logger[prevStateLevel]("prev state", prevState);
+      }
+
+      if (actionLevel) {
+        if (colors.action) logger[actionLevel]("%c action", "color: " + colors.action(formattedAction) + "; font-weight: bold", formattedAction);else logger[actionLevel]("action", formattedAction);
+      }
+
+      if (error && errorLevel) {
+        if (colors.error) logger[errorLevel]("%c error", "color: " + colors.error(error, prevState) + "; font-weight: bold", error);else logger[errorLevel]("error", error);
+      }
+
+      if (nextStateLevel) {
+        if (colors.nextState) logger[nextStateLevel]("%c next state", "color: " + colors.nextState(nextState) + "; font-weight: bold", nextState);else logger[nextStateLevel]("next state", nextState);
+      }
+
+      try {
+        logger.groupEnd();
+      } catch (e) {
+        logger.log("—— log end ——");
+      }
+    });
+    logBuffer.length = 0;
+  }
+
+  return function (_ref) {
+    var getState = _ref.getState;
+    return function (next) {
+      return function (action) {
+        // exit early if predicate function returns false
+        if (typeof predicate === "function" && !predicate(getState, action)) {
+          return next(action);
+        }
+
+        var logEntry = {};
+        logBuffer.push(logEntry);
+
+        logEntry.started = timer.now();
+        logEntry.startedTime = new Date();
+        logEntry.prevState = stateTransformer(getState());
+        logEntry.action = action;
+
+        var returnedValue = undefined;
+        if (logErrors) {
+          try {
+            returnedValue = next(action);
+          } catch (e) {
+            logEntry.error = errorTransformer(e);
+          }
+        } else {
+          returnedValue = next(action);
+        }
+
+        logEntry.took = timer.now() - logEntry.started;
+        logEntry.nextState = stateTransformer(getState());
+
+        printBuffer();
+
+        if (logEntry.error) throw logEntry.error;
+        return returnedValue;
+      };
+    };
+  };
+}
+
+module.exports = createLogger;
+},{}],"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/redux/lib/applyMiddleware.js":[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -20457,7 +20686,35 @@ module.exports = function symbolObservablePonyfill(root) {
 	return result;
 };
 
-},{}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/actions/palette.js":[function(require,module,exports){
+},{}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/actions/layout.js":[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.maximiseLayout = maximiseLayout;
+exports.minimiseLayout = minimiseLayout;
+
+var _actionTypes = require('../constants/action-types');
+
+var types = _interopRequireWildcard(_actionTypes);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function maximiseLayout(index) {
+    return {
+        type: types.MAXIMISE_LAYOUT,
+        index: index
+    };
+}
+
+function minimiseLayout() {
+    return {
+        type: types.MINIMISE_LAYOUT
+    };
+}
+
+},{"../constants/action-types":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/constants/action-types.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/actions/palette.js":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20496,6 +20753,10 @@ var _redux = require('redux');
 
 var _reactRedux = require('react-redux');
 
+var _reduxLogger = require('redux-logger');
+
+var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
+
 var _reducers = require('./reducers/');
 
 var _reducers2 = _interopRequireDefault(_reducers);
@@ -20512,9 +20773,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var loggerMiddleware = (0, _reduxLogger2.default)();
+
+var createStoreWithMiddleware = (0, _redux.applyMiddleware)(loggerMiddleware)(_redux.createStore);
+
 var reducer = (0, _redux.combineReducers)(Object.assign({}, _reducers2.default));
 
-var store = (0, _redux.createStore)(reducer);
+var store = createStoreWithMiddleware(reducer);
 
 var App = function (_React$Component) {
     _inherits(App, _React$Component);
@@ -20541,7 +20806,7 @@ var App = function (_React$Component) {
 
 exports.default = App;
 
-},{"./containers/index.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/containers/index.jsx","./reducers/":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/reducers/index.js","react":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/react.js","react-redux":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react-redux/lib/index.js","redux":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/redux/lib/index.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/colour-pickers.jsx":[function(require,module,exports){
+},{"./containers/index.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/containers/index.jsx","./reducers/":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/reducers/index.js","react":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/react.js","react-redux":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react-redux/lib/index.js","redux":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/redux/lib/index.js","redux-logger":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/redux-logger/lib/index.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/colour-pickers.jsx":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20682,15 +20947,37 @@ var styles = {
 var Layouts = function Layouts(_ref) {
     var palette = _ref.palette;
     var numberOfLayouts = _ref.numberOfLayouts;
+    var maximiseLayout = _ref.maximiseLayout;
+    var minimiseLayout = _ref.minimiseLayout;
+    var maximisedLayout = _ref.maximisedLayout;
 
+    var Layout = void 0;
+    if (maximisedLayout !== null) {
+        Layout = _layouts2.default['layout' + maximisedLayout];
+    }
     return _react2.default.createElement(
         'div',
-        { className: 'col-10 flex layouts flex-wrap justify-between p2', style: styles.layouts },
-        Array.from({ length: numberOfLayouts }).map(function (layout, index) {
-            var Layout = _layouts2.default['layout' + index];
+        { className: 'col-10 flex layouts flex-wrap justify-between p2 ' + (!!(maximisedLayout !== null) && 'maximised'), style: styles.layouts },
+        maximisedLayout !== null && _react2.default.createElement(
+            'div',
+            { className: 'layout col-12 mb2 pb2', style: Object.assign({}, styles.layout, {
+                    width: '100%',
+                    overflow: 'auto',
+                    cursor: 'zoom-out'
+                }), onClick: function onClick() {
+                    return minimiseLayout();
+                } },
+            _react2.default.createElement(Layout, { palette: palette })
+        ),
+        maximisedLayout == null && Array.from({ length: numberOfLayouts }).map(function (layout, index) {
+            Layout = _layouts2.default['layout' + index];
             return _react2.default.createElement(
                 'div',
-                { className: 'layout col-4 mb2', style: styles.layout },
+                { className: 'layout col-4 mb2 pb2', style: Object.assign({}, styles.layout, {
+                        cursor: 'zoom-in'
+                    }), onClick: function onClick() {
+                        return maximiseLayout(index);
+                    } },
                 _react2.default.createElement(Layout, { palette: palette })
             );
         })
@@ -20749,7 +21036,7 @@ var Layout0 = function Layout0(_ref) {
                 { className: "flex justify-center mt2" },
                 _react2.default.createElement(
                     "div",
-                    { className: "button primary border py0 px2 self-center", style: {
+                    { className: "button primary border py1 px2 self-center", style: {
                             backgroundColor: palette.primaryButtonBackgroundColour
                         } },
                     _react2.default.createElement(
@@ -20762,7 +21049,7 @@ var Layout0 = function Layout0(_ref) {
                 ),
                 _react2.default.createElement(
                     "div",
-                    { className: "button secondary border py0 px2 self-center", style: {
+                    { className: "button secondary border py1 px2 self-center", style: {
                             backgroundColor: palette.secondaryButtonBackgroundColour
                         } },
                     _react2.default.createElement(
@@ -20817,7 +21104,7 @@ var Layout0 = function Layout0(_ref) {
         ),
         _react2.default.createElement(
             "div",
-            { className: "flex justify-center" },
+            { className: "flex justify-center pt2" },
             _react2.default.createElement(
                 "p",
                 { style: {
@@ -20867,7 +21154,7 @@ var Layout1 = function Layout1(_ref) {
                 { className: "col-6" },
                 _react2.default.createElement(
                     "h2",
-                    { style: {
+                    { className: "pb2", style: {
                             color: palette.headingTextColour
                         } },
                     "Some hero text, we do x y z blah blah blah"
@@ -20879,7 +21166,7 @@ var Layout1 = function Layout1(_ref) {
                         "div",
                         { style: {
                                 backgroundColor: palette.primaryButtonBackgroundColour
-                            }, className: "button primary border py0 px2 self-center" },
+                            }, className: "button primary border py1 px2 self-center" },
                         _react2.default.createElement(
                             "p",
                             { style: {
@@ -20890,7 +21177,7 @@ var Layout1 = function Layout1(_ref) {
                     ),
                     _react2.default.createElement(
                         "div",
-                        { className: "button secondary border py0 px2 self-center", style: {
+                        { className: "button secondary border py1 px2 self-center", style: {
                                 backgroundColor: palette.secondaryButtonBackgroundColour
                             } },
                         _react2.default.createElement(
@@ -20951,7 +21238,7 @@ var Layout1 = function Layout1(_ref) {
         ),
         _react2.default.createElement(
             "div",
-            { className: "flex justify-center" },
+            { className: "flex justify-center pt2" },
             _react2.default.createElement(
                 "p",
                 { style: {
@@ -21190,7 +21477,7 @@ var Layout3 = function Layout3(_ref) {
                 ),
                 _react2.default.createElement(
                     "div",
-                    { className: "button primary border py0 px2 self-center col-6 mx-auto mt1", style: {
+                    { className: "button primary border py1 px2 self-center col-6 mx-auto mt1", style: {
                             backgroundColor: palette.primaryButtonBackgroundColour
                         } },
                     _react2.default.createElement(
@@ -21245,7 +21532,7 @@ var Layout3 = function Layout3(_ref) {
         ),
         _react2.default.createElement(
             "div",
-            { className: "flex justify-center" },
+            { className: "flex justify-center pt2" },
             _react2.default.createElement(
                 "p",
                 { style: {
@@ -21443,7 +21730,7 @@ var Layout5 = function Layout5(_ref) {
                 ),
                 _react2.default.createElement(
                     "div",
-                    { className: "button primary border py0 px2 self-center col-6 mx-auto mt1", style: {
+                    { className: "button primary border py1 px2 self-center col-6 mx-auto mt1", style: {
                             backgroundColor: palette.primaryButtonBackgroundColour
                         } },
                     _react2.default.createElement(
@@ -21488,7 +21775,7 @@ var Layout5 = function Layout5(_ref) {
                 ),
                 _react2.default.createElement(
                     "div",
-                    { className: "button primary border py0 px2 self-center col-6 mx-auto mt1", style: {
+                    { className: "button primary border py1 px2 self-center col-6 mx-auto mt1", style: {
                             backgroundColor: palette.primaryButtonBackgroundColour
                         } },
                     _react2.default.createElement(
@@ -21557,6 +21844,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var COLOUR_CHANGE = exports.COLOUR_CHANGE = 'COLOUR_CHANGE';
+var MAXIMISE_LAYOUT = exports.MAXIMISE_LAYOUT = 'MAXIMISE_LAYOUT';
+var MINIMISE_LAYOUT = exports.MINIMISE_LAYOUT = 'MINIMISE_LAYOUT';
 
 },{}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/containers/index.jsx":[function(require,module,exports){
 'use strict';
@@ -21578,6 +21867,10 @@ var _reactRedux = require('react-redux');
 var _palette = require('./../actions/palette');
 
 var paletteActions = _interopRequireWildcard(_palette);
+
+var _layout = require('./../actions/layout');
+
+var layoutActions = _interopRequireWildcard(_layout);
 
 var _header = require('./../components/header.jsx');
 
@@ -21612,8 +21905,17 @@ var Index = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 { className: 'flex' },
-                _react2.default.createElement(_header2.default, { onColourChange: this.props.paletteActions.changeColour, palette: this.props.paletteState }),
-                _react2.default.createElement(_layouts2.default, { palette: this.props.paletteState, numberOfLayouts: this.props.layoutsState.numberOfLayouts })
+                _react2.default.createElement(_header2.default, {
+                    onColourChange: this.props.paletteActions.changeColour,
+                    palette: this.props.paletteState
+                }),
+                _react2.default.createElement(_layouts2.default, {
+                    maximisedLayout: this.props.layoutsState.maximisedLayout,
+                    maximiseLayout: this.props.layoutActions.maximiseLayout,
+                    minimiseLayout: this.props.layoutActions.minimiseLayout,
+                    palette: this.props.paletteState,
+                    numberOfLayouts: this.props.layoutsState.numberOfLayouts
+                })
             );
         }
     }]);
@@ -21624,7 +21926,8 @@ var Index = function (_React$Component) {
 Index.propTypes = {
     paletteActions: _react.PropTypes.object.isRequired,
     paletteState: _react.PropTypes.object.isRequired,
-    layoutsState: _react.PropTypes.object.isRequired
+    layoutsState: _react.PropTypes.object.isRequired,
+    layoutActions: _react.PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -21636,13 +21939,14 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        paletteActions: (0, _redux.bindActionCreators)(paletteActions, dispatch)
+        paletteActions: (0, _redux.bindActionCreators)(paletteActions, dispatch),
+        layoutActions: (0, _redux.bindActionCreators)(layoutActions, dispatch)
     };
 }
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Index);
 
-},{"./../actions/palette":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/actions/palette.js","./../components/header.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/header.jsx","./../components/layouts.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts.jsx","react":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/react.js","react-redux":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react-redux/lib/index.js","redux":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/redux/lib/index.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/main.js":[function(require,module,exports){
+},{"./../actions/layout":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/actions/layout.js","./../actions/palette":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/actions/palette.js","./../components/header.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/header.jsx","./../components/layouts.jsx":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/components/layouts.jsx","react":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react/react.js","react-redux":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/react-redux/lib/index.js","redux":"/Users/benhowdle/Dropbox/htdocs/speculo/node_modules/redux/lib/index.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/main.js":[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21686,23 +21990,39 @@ var reducers = {
 exports.default = reducers;
 
 },{"./layouts":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/reducers/layouts.js","./palette":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/reducers/palette.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/reducers/layouts.js":[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = layoutsState;
+
+var _actionTypes = require('../constants/action-types');
+
 var initialState = {
-    numberOfLayouts: 6
+    numberOfLayouts: 6,
+    maximisedLayout: null
 };
 
 function layoutsState() {
     var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+    var action = arguments[1];
 
-    return state;
+    switch (action.type) {
+        case _actionTypes.MAXIMISE_LAYOUT:
+            return Object.assign({}, state, {
+                maximisedLayout: action.index
+            });
+        case _actionTypes.MINIMISE_LAYOUT:
+            return Object.assign({}, state, {
+                maximisedLayout: null
+            });
+        default:
+            return state;
+    }
 }
 
-},{}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/reducers/palette.js":[function(require,module,exports){
+},{"../constants/action-types":"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/constants/action-types.js"}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/reducers/palette.js":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

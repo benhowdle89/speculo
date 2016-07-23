@@ -14,16 +14,16 @@ const Layout1 = ({ palette }) => {
             </div>
             <div className="hero border-bottom p2 flex items-center">
                 <div className="col-6">
-                    <h2 style={{
+                    <h2 className="pb2" style={{
                             color: palette.headingTextColour
                         }}>Some hero text, we do x y z blah blah blah</h2>
                     <div className="flex justify-center">
                         <div style={{
                                 backgroundColor: palette.primaryButtonBackgroundColour
-                            }} className="button primary border py0 px2 self-center"><p style={{
+                            }} className="button primary border py1 px2 self-center"><p style={{
                                 color: palette.primaryButtonTextColour
                             }}>Primary</p></div>
-                        <div className="button secondary border py0 px2 self-center" style={{
+                        <div className="button secondary border py1 px2 self-center" style={{
                                 backgroundColor: palette.secondaryButtonBackgroundColour
                             }}><p style={{
                                 color: palette.secondaryButtonTextColour
@@ -54,7 +54,7 @@ const Layout1 = ({ palette }) => {
                         }}>Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. </p>
                 </div>
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center pt2">
                 <p style={{
                         color: palette.bodyTextColour
                     }}>Some footer text.</p>

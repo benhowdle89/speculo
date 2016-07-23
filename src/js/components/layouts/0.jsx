@@ -20,12 +20,12 @@ const Layout0 = ({ palette }) => {
                         color: palette.secondaryHeadingTextColour
                     }}>But we also do more blah blah blah</h3>
                 <div className="flex justify-center mt2">
-                    <div className="button primary border py0 px2 self-center" style={{
+                    <div className="button primary border py1 px2 self-center" style={{
                             backgroundColor: palette.primaryButtonBackgroundColour
                         }}><p style={{
                             color: palette.primaryButtonTextColour
                         }}>Primary</p></div>
-                    <div className="button secondary border py0 px2 self-center" style={{
+                    <div className="button secondary border py1 px2 self-center" style={{
                             backgroundColor: palette.secondaryButtonBackgroundColour
                         }}><p style={{
                             color: palette.secondaryButtonTextColour
@@ -52,7 +52,7 @@ const Layout0 = ({ palette }) => {
                         }}>Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. </p>
                 </div>
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center pt2">
                 <p style={{
                         color: palette.bodyTextColour
                     }}>Some footer text.</p>
