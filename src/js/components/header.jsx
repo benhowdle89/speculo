@@ -85,7 +85,10 @@ const Header = ({ onColourChange, palette, toggleSidebar, sidebarExpanded, toggl
                 <Logo />
             </div>
             <ColourPickers onColourChange={onColourChange} palette={palette} />
-            <i className="fa fa-chevron-circle-left" style={styles.contractIcon} onClick={toggleSidebar}></i>
+            <i className="fa fa-chevron-circle-left" style={styles.contractIcon} onClick={() => {
+                window.scrollTo(0, 0)
+                toggleSidebar()
+            }}></i>
             <p className="" style={styles.author}>Made by <a className="text-decoration-none bold" href="http://benhowdle.im">Ben Howdle</a></p>
         </header>
     )

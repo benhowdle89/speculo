@@ -44095,7 +44095,10 @@ var Header = function Header(_ref) {
             _react2.default.createElement(_logo2.default, null)
         ),
         _react2.default.createElement(_colourPickers2.default, { onColourChange: onColourChange, palette: palette }),
-        _react2.default.createElement('i', { className: 'fa fa-chevron-circle-left', style: styles.contractIcon, onClick: toggleSidebar }),
+        _react2.default.createElement('i', { className: 'fa fa-chevron-circle-left', style: styles.contractIcon, onClick: function onClick() {
+                window.scrollTo(0, 0);
+                toggleSidebar();
+            } }),
         _react2.default.createElement(
             'p',
             { className: '', style: styles.author },
@@ -44193,7 +44196,7 @@ var Help = function Help(_ref) {
                     _react2.default.createElement(
                         'p',
                         { style: styles.helpText },
-                        'Click on one of the layouts to zoom in. Focus.'
+                        'Click on one of the layouts to zoom in and focus.'
                     )
                 ),
                 _react2.default.createElement(
@@ -44235,13 +44238,7 @@ var Help = function Help(_ref) {
                     _react2.default.createElement(
                         'p',
                         { style: styles.helpText },
-                        'Export your created colour palette to ',
-                        _react2.default.createElement(
-                            'a',
-                            { href: 'https://coolors.co/' },
-                            'Coolors'
-                        ),
-                        ' with one click.'
+                        'Export your created colour palette to CSS with one click, look for the link icon in the top left.'
                     )
                 ),
                 _react2.default.createElement(
@@ -44384,7 +44381,7 @@ var Layout0 = function Layout0(_ref) {
             } },
         _react2.default.createElement(
             "div",
-            { className: "flex border-bottom py1" },
+            { className: "flex border-bottom p2" },
             _react2.default.createElement("img", { src: "/dist/images/logo.png", className: "pl1 logo", alt: "" })
         ),
         _react2.default.createElement(
@@ -44477,7 +44474,7 @@ var Layout0 = function Layout0(_ref) {
         ),
         _react2.default.createElement(
             "div",
-            { className: "flex justify-center pt2" },
+            { className: "flex justify-center py2" },
             _react2.default.createElement(
                 "p",
                 { style: {
@@ -44516,7 +44513,7 @@ var Layout1 = function Layout1(_ref) {
             } },
         _react2.default.createElement(
             "div",
-            { className: "flex border-bottom py1" },
+            { className: "flex border-bottom p2" },
             _react2.default.createElement("img", { src: "/dist/images/logo.png", className: "pl1 logo", alt: "" })
         ),
         _react2.default.createElement(
@@ -44611,7 +44608,7 @@ var Layout1 = function Layout1(_ref) {
         ),
         _react2.default.createElement(
             "div",
-            { className: "flex justify-center pt2" },
+            { className: "flex justify-center py2" },
             _react2.default.createElement(
                 "p",
                 { style: {
@@ -44666,7 +44663,7 @@ var Layout2 = function Layout2(_ref) {
         ),
         _react2.default.createElement(
             "div",
-            { className: "flex border-bottom" },
+            { className: "flex border-bottom py2" },
             _react2.default.createElement(
                 "div",
                 { className: "col-4" },
@@ -44680,7 +44677,7 @@ var Layout2 = function Layout2(_ref) {
             ),
             _react2.default.createElement(
                 "div",
-                { className: "col-4" },
+                { className: "col-4 border-right border-left" },
                 _react2.default.createElement(
                     "p",
                     { style: {
@@ -44706,7 +44703,7 @@ var Layout2 = function Layout2(_ref) {
             { className: "flex" },
             _react2.default.createElement(
                 "div",
-                { className: "col-8 border-right px2" },
+                { className: "col-8 border-right p2" },
                 _react2.default.createElement(
                     "h2",
                     { style: {
@@ -44820,7 +44817,7 @@ var Layout3 = function Layout3(_ref) {
             } },
         _react2.default.createElement(
             "div",
-            { className: "flex border-bottom py1" },
+            { className: "flex border-bottom p2" },
             _react2.default.createElement("img", { src: "/dist/images/logo.png", className: "pl1 logo", alt: "" })
         ),
         _react2.default.createElement(
@@ -44905,7 +44902,7 @@ var Layout3 = function Layout3(_ref) {
         ),
         _react2.default.createElement(
             "div",
-            { className: "flex justify-center pt2" },
+            { className: "flex justify-center py2" },
             _react2.default.createElement(
                 "p",
                 { style: {
@@ -44944,7 +44941,7 @@ var Layout4 = function Layout4(_ref) {
             } },
         _react2.default.createElement(
             "div",
-            { className: "flex border-bottom py1" },
+            { className: "flex border-bottom p2" },
             _react2.default.createElement("img", { src: "/dist/images/logo.png", className: "pl1 logo", alt: "" })
         ),
         _react2.default.createElement(

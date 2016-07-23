@@ -9,7 +9,7 @@ const Layout4 = ({ palette }) => {
         <div style={{
                 backgroundColor: palette.bodyBackgroundColour
             }}>
-            <div className="flex border-bottom py1">
+            <div className="flex border-bottom p2">
                 <img src="/dist/images/logo.png" className="pl1 logo" alt=""/>
             </div>
             <div className="flex p2 flex-wrap justify-center">

@@ -17,13 +17,13 @@ const Layout2 = ({ palette }) => {
                         color: palette.headingTextColour
                     }}>Some hero text, we do x y z blah blah blah</h2>
             </div>
-            <div className="flex border-bottom">
+            <div className="flex border-bottom py2">
                 <div className="col-4">
                     <p style={{
                             color: palette.bodyTextColour
                         }}>Some</p>
                 </div>
-                <div className="col-4">
+                <div className="col-4 border-right border-left">
                     <p style={{
                             color: palette.bodyTextColour
                         }}>Menu</p>
@@ -35,7 +35,7 @@ const Layout2 = ({ palette }) => {
                 </div>
             </div>
             <div className="flex">
-                <div className="col-8 border-right px2">
+                <div className="col-8 border-right p2">
                     <h2 style={{
                             color: palette.headingTextColour
                         }}>Some hero text</h2>

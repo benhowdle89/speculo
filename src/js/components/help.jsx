@@ -42,7 +42,7 @@ const Help = ({ toggleHelp }) => {
                         <div className="mb1">
                             <i style={styles.helpIcon} className="fa fa-eye"></i>
                         </div>
-                        <p style={styles.helpText}>Click on one of the layouts to zoom in. Focus.</p>
+                        <p style={styles.helpText}>Click on one of the layouts to zoom in and focus.</p>
                     </div>
                     <div className="flex flex-column items-center mb2" style={styles.helpItem}>
                         <div className="mb1">
@@ -60,7 +60,7 @@ const Help = ({ toggleHelp }) => {
                         <div className="mb1">
                             <i style={styles.helpIcon} className="fa fa-link"></i>
                         </div>
-                        <p style={styles.helpText}>Export your created colour palette to <a href="https://coolors.co/">Coolors</a> with one click.</p>
+                        <p style={styles.helpText}>Export your created colour palette to CSS with one click, look for the link icon in the top left.</p>
                     </div>
                     <div className="flex flex-column items-center" style={styles.helpItem}>
                         <div className="mb1">

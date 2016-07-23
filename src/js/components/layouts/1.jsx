@@ -9,7 +9,7 @@ const Layout1 = ({ palette }) => {
         <div style={{
                 backgroundColor: palette.bodyBackgroundColour
             }}>
-            <div className="flex border-bottom py1">
+            <div className="flex border-bottom p2">
                 <img src="/dist/images/logo.png" className="pl1 logo" alt=""/>
             </div>
             <div className="hero border-bottom p2 flex items-center">
@@ -54,7 +54,7 @@ const Layout1 = ({ palette }) => {
                         }}>Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. </p>
                 </div>
             </div>
-            <div className="flex justify-center pt2">
+            <div className="flex justify-center py2">
                 <p style={{
                         color: palette.bodyTextColour
                     }}>Some footer text.</p>
