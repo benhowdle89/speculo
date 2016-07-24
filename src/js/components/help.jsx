@@ -67,7 +67,7 @@ const Help = ({ toggleHelp, helpSeen, setHelpSeen }) => {
                         <div className="mb1">
                             <i style={styles.helpIcon} className="fa fa-paint-brush"></i>
                         </div>
-                        <p style={styles.helpText}>Change the colours on the left hand side and watch the layouts automatically update.</p>
+                        <p style={styles.helpText}>Change the colours on the left hand side (hex entry or click for colour picker) and watch the layouts automatically update.</p>
                     </div>
                     <div className="flex flex-column items-center mb2" style={styles.helpItem}>
                         <div className="mb1">

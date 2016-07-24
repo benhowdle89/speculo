@@ -43875,15 +43875,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var styles = {
-    pickerWrap: {},
+    pickerWrap: {
+        borderColor: 'rgba(0,0,0,0.1)'
+    },
     color: {
         textTransform: 'capitalize',
         fontSize: '12px'
     },
     labelPicker: {
         cursor: 'pointer',
-        boxShadow: '0 1px 2px rgba(5,30,50,.6)',
-        borderRadius: '4px'
+        paddingTop: '10px',
+        paddingBottom: '10px'
     },
     picker: {
         opacity: 0,
@@ -43893,6 +43895,17 @@ var styles = {
     colorText: {
         dark: '#ffffff',
         light: '#38495c'
+    },
+    hexLabel: {
+        marginRight: '3px'
+    },
+    hexInput: {
+        font: 'inherit',
+        fontSize: '12px',
+        backgroundColor: 'transparent',
+        width: '40px',
+        top: '-2px',
+        position: 'relative'
     }
 };
 
@@ -43909,15 +43922,15 @@ var ColourPickers = function ColourPickers(_ref) {
 
     return _react2.default.createElement(
         'div',
-        null,
+        { className: 'mt1' },
         Object.keys(palette).map(function (colour) {
             var colorText = styles.colorText[(0, _contrast2.default)(palette[colour])];
             return _react2.default.createElement(
                 'div',
-                { className: 'flex flex-column m2', style: styles.pickerWrap },
+                { className: 'flex flex-column mb1 border-bottom border-top', style: styles.pickerWrap },
                 _react2.default.createElement(
                     'label',
-                    { className: 'py2 px1 flex justify-center', style: Object.assign({}, styles.labelPicker, {
+                    { className: 'px1 flex justify-center items-center flex-column', style: Object.assign({}, styles.labelPicker, {
                             backgroundColor: palette[colour]
                         }) },
                     _react2.default.createElement('input', { style: styles.picker, type: 'color', onChange: function onChange(event) {
@@ -43926,10 +43939,29 @@ var ColourPickers = function ColourPickers(_ref) {
                         }, value: palette[colour] }),
                     _react2.default.createElement(
                         'p',
-                        { style: Object.assign({}, styles.color, {
+                        { className: 'mb1', style: Object.assign({}, styles.color, {
                                 color: colorText
                             }) },
                         colour.replace(/Colour/, '').replace(/([A-Z])/g, ' $1')
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement(
+                            'label',
+                            { className: '', style: Object.assign({}, styles.hexLabel, {
+                                    color: colorText
+                                }) },
+                            '#'
+                        ),
+                        _react2.default.createElement('input', { className: 'border-bottom', style: Object.assign({}, styles.hexInput, {
+                                borderColor: colorText,
+                                color: colorText
+                            }), onChange: function onChange(event) {
+                                var value = '#' + event.target.value;
+                                updateURL(colour, value, palette);
+                                onColourChange(colour, value);
+                            }, type: 'text', value: palette[colour].replace(/#/, '') })
                     )
                 )
             );
@@ -44314,7 +44346,7 @@ var Help = function Help(_ref) {
                     _react2.default.createElement(
                         'p',
                         { style: styles.helpText },
-                        'Change the colours on the left hand side and watch the layouts automatically update.'
+                        'Change the colours on the left hand side (hex entry or click for colour picker) and watch the layouts automatically update.'
                     )
                 ),
                 _react2.default.createElement(
