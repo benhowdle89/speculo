@@ -30,7 +30,7 @@ const styles = {
         font: 'inherit',
         fontSize: '12px',
         backgroundColor: 'transparent',
-        width: '40px',
+        width: '45px',
         top: '-2px',
         position: 'relative'
     }
@@ -43,12 +43,16 @@ const updateURL = (paletteItem, value, palette) => {
     window.location.hash = `palette=${Object.keys(newPalette).map(colour => newPalette[colour].replace(/#/, '')).join('-')}`
 }
 
+const isValidHex = (hex) => {
+    return /^#[0-9A-F]{6}$/i.test(hex)
+}
+
 const ColourPickers = ({ onColourChange, palette }) => {
     return (
         <div className="mt1">
             {
                 Object.keys(palette).map(colour => {
-                    let colorText = styles.colorText[contrast(palette[colour])]
+                    let colorText = isValidHex(palette[colour]) ? styles.colorText[contrast(palette[colour])] : styles.colorText.light
                     return <div className="flex flex-column mb1 border-bottom border-top" style={styles.pickerWrap}>
                             <label className="px1 flex justify-center items-center flex-column" style={Object.assign({}, styles.labelPicker, {
                                 backgroundColor: palette[colour]
@@ -69,6 +73,12 @@ const ColourPickers = ({ onColourChange, palette }) => {
                                         color: colorText
                                     })} onChange={event => {
                                     let value = `#${event.target.value}`
+                                    if(!value){
+                                        return
+                                    }
+                                    if(value.length > 7){
+                                        return
+                                    }
                                     updateURL(colour, value, palette)
                                     onColourChange(colour, value)
                                 }} type="text" value={palette[colour].replace(/#/, '')} />

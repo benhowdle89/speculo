@@ -43903,7 +43903,7 @@ var styles = {
         font: 'inherit',
         fontSize: '12px',
         backgroundColor: 'transparent',
-        width: '40px',
+        width: '45px',
         top: '-2px',
         position: 'relative'
     }
@@ -43916,6 +43916,11 @@ var updateURL = function updateURL(paletteItem, value, palette) {
     }).join('-');
 };
 
+var isValidHex = function isValidHex(hex) {
+    return (/^#[0-9A-F]{6}$/i.test(hex)
+    );
+};
+
 var ColourPickers = function ColourPickers(_ref) {
     var onColourChange = _ref.onColourChange;
     var palette = _ref.palette;
@@ -43924,7 +43929,7 @@ var ColourPickers = function ColourPickers(_ref) {
         'div',
         { className: 'mt1' },
         Object.keys(palette).map(function (colour) {
-            var colorText = styles.colorText[(0, _contrast2.default)(palette[colour])];
+            var colorText = isValidHex(palette[colour]) ? styles.colorText[(0, _contrast2.default)(palette[colour])] : styles.colorText.light;
             return _react2.default.createElement(
                 'div',
                 { className: 'flex flex-column mb1 border-bottom border-top', style: styles.pickerWrap },
@@ -43959,6 +43964,12 @@ var ColourPickers = function ColourPickers(_ref) {
                                 color: colorText
                             }), onChange: function onChange(event) {
                                 var value = '#' + event.target.value;
+                                if (!value) {
+                                    return;
+                                }
+                                if (value.length > 7) {
+                                    return;
+                                }
                                 updateURL(colour, value, palette);
                                 onColourChange(colour, value);
                             }, type: 'text', value: palette[colour].replace(/#/, '') })
