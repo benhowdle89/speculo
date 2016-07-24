@@ -4,7 +4,8 @@ import {
     TOGGLE_SIDEBAR,
     TOGGLE_HELP,
     TOGGLE_EXPORT,
-    HELP_SEEN
+    HELP_SEEN,
+    CHANGE_FONT
 }
 from '../constants/action-types'
 
@@ -14,7 +15,9 @@ const initialState = {
     sidebarExpanded: true,
     helpExpanded: false,
     exportExpanded: false,
-    helpSeen: localStorage.getItem('helpSeen')
+    helpSeen: localStorage.getItem('helpSeen'),
+    currentFont: 'Helvetica Neue',
+    fonts: ['Arvo',  'Helvetica Neue', 'Lato', 'Montserrat', 'Open Sans', 'Roboto']
 }
 
 export default function layoutsState(state = initialState, action) {
@@ -43,6 +46,10 @@ export default function layoutsState(state = initialState, action) {
             return Object.assign({}, state, {
                 helpSeen: true,
                 helpExpanded: false
+            })
+        case CHANGE_FONT:
+            return Object.assign({}, state, {
+                currentFont: action.font
             })
         default:
             return state

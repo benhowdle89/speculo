@@ -3,6 +3,10 @@ import React from 'react'
 import LayoutsObject from './layouts/'
 import Help from './help.jsx'
 
+const getStyle = (currentFont) => {
+    return `.layouts.maximised { font-family: ${currentFont} }`
+}
+
 const styles = {
     layouts: {
         textAlign: 'center',
@@ -14,7 +18,7 @@ const styles = {
     }
 }
 
-const Layouts = ({ palette, numberOfLayouts, maximiseLayout, minimiseLayout, maximisedLayout, sidebarExpanded }) => {
+const Layouts = ({ palette, numberOfLayouts, maximiseLayout, minimiseLayout, maximisedLayout, sidebarExpanded, currentFont }) => {
     let Layout
     if(maximisedLayout !== null){
         Layout = LayoutsObject[`layout${maximisedLayout}`]
@@ -26,6 +30,7 @@ const Layouts = ({ palette, numberOfLayouts, maximiseLayout, minimiseLayout, max
                 [!sidebarExpanded ? 'marginLeft' : '']: (!sidebarExpanded) ? '0' : ''
             })}
         >
+            <style>{getStyle(currentFont)}</style>
             {(maximisedLayout !== null) && (
                 <div className="layout col-12 mb2" style={Object.assign({}, styles.layout, {
                         width: '100%',

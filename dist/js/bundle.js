@@ -43711,6 +43711,7 @@ exports.toggleSidebar = toggleSidebar;
 exports.toggleHelp = toggleHelp;
 exports.toggleExport = toggleExport;
 exports.helpSeen = helpSeen;
+exports.changeFont = changeFont;
 
 var _actionTypes = require('../constants/action-types');
 
@@ -43752,6 +43753,13 @@ function toggleExport() {
 function helpSeen() {
     return {
         type: types.HELP_SEEN
+    };
+}
+
+function changeFont(font) {
+    return {
+        type: types.CHANGE_FONT,
+        font: font
     };
 }
 
@@ -44099,6 +44107,12 @@ var styles = {
         position: 'absolute',
         bottom: '20px',
         right: '16px'
+    },
+    fontChange: {
+        borderColor: '#E7E9EC'
+    },
+    fontSelect: {
+        boxShadow: '0 1px 2px rgba(5,30,50,.6)'
     }
 };
 
@@ -44109,6 +44123,10 @@ var Header = function Header(_ref) {
     var sidebarExpanded = _ref.sidebarExpanded;
     var toggleHelp = _ref.toggleHelp;
     var toggleExport = _ref.toggleExport;
+    var changeFont = _ref.changeFont;
+    var fonts = _ref.fonts;
+    var currentFont = _ref.currentFont;
+    var maximisedLayout = _ref.maximisedLayout;
 
     if (!sidebarExpanded) {
         return _react2.default.createElement(
@@ -44135,6 +44153,32 @@ var Header = function Header(_ref) {
             _react2.default.createElement('i', { className: 'fa fa-question-circle mr2', style: styles.helpIcon, onClick: toggleHelp }),
             _react2.default.createElement('i', { style: styles.exportIcon, className: 'fa fa-link', onClick: toggleExport }),
             _react2.default.createElement(_logo2.default, null)
+        ),
+        maximisedLayout !== null && _react2.default.createElement(
+            'div',
+            { className: 'border-bottom p2', style: styles.fontChange },
+            _react2.default.createElement(
+                'label',
+                { className: 'flex' },
+                _react2.default.createElement(
+                    'span',
+                    { className: 'flex-auto' },
+                    'Font'
+                ),
+                _react2.default.createElement(
+                    'select',
+                    { className: '', style: styles.fontSelect, onChange: function onChange(event) {
+                            return changeFont(event.target.value);
+                        }, value: currentFont },
+                    fonts.map(function (font) {
+                        return _react2.default.createElement(
+                            'option',
+                            { value: font },
+                            font
+                        );
+                    })
+                )
+            )
         ),
         _react2.default.createElement(_colourPickers2.default, { onColourChange: onColourChange, palette: palette }),
         _react2.default.createElement('i', { className: 'fa fa-chevron-circle-left', style: styles.contractIcon, onClick: function onClick() {
@@ -44377,6 +44421,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+var getStyle = function getStyle(currentFont) {
+    return '.layouts.maximised { font-family: ' + currentFont + ' }';
+};
+
 var styles = {
     layouts: {
         textAlign: 'center',
@@ -44395,6 +44443,7 @@ var Layouts = function Layouts(_ref) {
     var minimiseLayout = _ref.minimiseLayout;
     var maximisedLayout = _ref.maximisedLayout;
     var sidebarExpanded = _ref.sidebarExpanded;
+    var currentFont = _ref.currentFont;
 
     var Layout = void 0;
     if (maximisedLayout !== null) {
@@ -44406,6 +44455,11 @@ var Layouts = function Layouts(_ref) {
             className: (sidebarExpanded ? 'col-10' : 'col-12') + ' flex layouts flex-wrap justify-between p2 ' + (!!(maximisedLayout !== null) && 'maximised'),
             style: Object.assign({}, styles.layouts, _defineProperty({}, !sidebarExpanded ? 'marginLeft' : '', !sidebarExpanded ? '0' : ''))
         },
+        _react2.default.createElement(
+            'style',
+            null,
+            getStyle(currentFont)
+        ),
         maximisedLayout !== null && _react2.default.createElement(
             'div',
             { className: 'layout col-12 mb2', style: Object.assign({}, styles.layout, {
@@ -45027,31 +45081,7 @@ var Layout4 = function Layout4(_ref) {
             { className: "flex p2 flex-wrap justify-center" },
             _react2.default.createElement(
                 "div",
-                { className: "flex mb2" },
-                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image", alt: "" }),
-                _react2.default.createElement(
-                    "p",
-                    { className: "pl1", style: {
-                            color: palette.bodyTextColour
-                        } },
-                    "Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. "
-                )
-            ),
-            _react2.default.createElement(
-                "div",
-                { className: "flex mb2" },
-                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image", alt: "" }),
-                _react2.default.createElement(
-                    "p",
-                    { className: "pl1", style: {
-                            color: palette.bodyTextColour
-                        } },
-                    "Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. "
-                )
-            ),
-            _react2.default.createElement(
-                "div",
-                { className: "flex mb2" },
+                { className: "flex mb4" },
                 _react2.default.createElement(
                     "div",
                     { className: "border py1 px2 my1" },
@@ -45104,7 +45134,7 @@ var Layout4 = function Layout4(_ref) {
             _react2.default.createElement(
                 "div",
                 { className: "flex mb2" },
-                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image", alt: "" }),
+                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image mr2", alt: "" }),
                 _react2.default.createElement(
                     "p",
                     { className: "pl1", style: {
@@ -45116,7 +45146,31 @@ var Layout4 = function Layout4(_ref) {
             _react2.default.createElement(
                 "div",
                 { className: "flex mb2" },
-                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image", alt: "" }),
+                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image mr2", alt: "" }),
+                _react2.default.createElement(
+                    "p",
+                    { className: "pl1", style: {
+                            color: palette.bodyTextColour
+                        } },
+                    "Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. "
+                )
+            ),
+            _react2.default.createElement(
+                "div",
+                { className: "flex mb2" },
+                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image mr2", alt: "" }),
+                _react2.default.createElement(
+                    "p",
+                    { className: "pl1", style: {
+                            color: palette.bodyTextColour
+                        } },
+                    "Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. Some filla text. "
+                )
+            ),
+            _react2.default.createElement(
+                "div",
+                { className: "flex mb2" },
+                _react2.default.createElement("img", { src: "https://unsplash.it/400/266?image=431", className: "small-image mr2", alt: "" }),
                 _react2.default.createElement(
                     "p",
                     { className: "pl1", style: {
@@ -45333,6 +45387,7 @@ var TOGGLE_SIDEBAR = exports.TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
 var TOGGLE_HELP = exports.TOGGLE_HELP = 'TOGGLE_HELP';
 var TOGGLE_EXPORT = exports.TOGGLE_EXPORT = 'TOGGLE_EXPORT';
 var HELP_SEEN = exports.HELP_SEEN = 'HELP_SEEN';
+var CHANGE_FONT = exports.CHANGE_FONT = 'CHANGE_FONT';
 
 },{}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/containers/index.jsx":[function(require,module,exports){
 'use strict';
@@ -45422,7 +45477,11 @@ var Index = function (_React$Component) {
                     toggleSidebar: this.props.layoutActions.toggleSidebar,
                     toggleHelp: this.props.layoutActions.toggleHelp,
                     toggleExport: this.props.layoutActions.toggleExport,
-                    sidebarExpanded: this.props.layoutsState.sidebarExpanded
+                    sidebarExpanded: this.props.layoutsState.sidebarExpanded,
+                    currentFont: this.props.layoutsState.currentFont,
+                    fonts: this.props.layoutsState.fonts,
+                    changeFont: this.props.layoutActions.changeFont,
+                    maximisedLayout: this.props.layoutsState.maximisedLayout
                 }),
                 _react2.default.createElement(_layouts2.default, {
                     maximisedLayout: this.props.layoutsState.maximisedLayout,
@@ -45430,7 +45489,8 @@ var Index = function (_React$Component) {
                     minimiseLayout: this.props.layoutActions.minimiseLayout,
                     palette: this.props.paletteState,
                     numberOfLayouts: this.props.layoutsState.numberOfLayouts,
-                    sidebarExpanded: this.props.layoutsState.sidebarExpanded
+                    sidebarExpanded: this.props.layoutsState.sidebarExpanded,
+                    currentFont: this.props.layoutsState.currentFont
                 })
             );
         }
@@ -45521,7 +45581,9 @@ var initialState = {
     sidebarExpanded: true,
     helpExpanded: false,
     exportExpanded: false,
-    helpSeen: localStorage.getItem('helpSeen')
+    helpSeen: localStorage.getItem('helpSeen'),
+    currentFont: 'Helvetica Neue',
+    fonts: ['Arvo', 'Helvetica Neue', 'Lato', 'Montserrat', 'Open Sans', 'Roboto']
 };
 
 function layoutsState() {
@@ -45553,6 +45615,10 @@ function layoutsState() {
             return Object.assign({}, state, {
                 helpSeen: true,
                 helpExpanded: false
+            });
+        case _actionTypes.CHANGE_FONT:
+            return Object.assign({}, state, {
+                currentFont: action.font
             });
         default:
             return state;

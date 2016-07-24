@@ -41,6 +41,10 @@ class Index extends React.Component {
                     toggleHelp={this.props.layoutActions.toggleHelp}
                     toggleExport={this.props.layoutActions.toggleExport}
                     sidebarExpanded={this.props.layoutsState.sidebarExpanded}
+                    currentFont={this.props.layoutsState.currentFont}
+                    fonts={this.props.layoutsState.fonts}
+                    changeFont={this.props.layoutActions.changeFont}
+                    maximisedLayout={this.props.layoutsState.maximisedLayout}
                 />
                 <Layouts
                     maximisedLayout={this.props.layoutsState.maximisedLayout}
@@ -49,6 +53,7 @@ class Index extends React.Component {
                     palette={this.props.paletteState}
                     numberOfLayouts={this.props.layoutsState.numberOfLayouts}
                     sidebarExpanded={this.props.layoutsState.sidebarExpanded}
+                    currentFont={this.props.layoutsState.currentFont}
                 />
             </div>
         )

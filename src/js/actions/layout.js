@@ -36,3 +36,10 @@ export function helpSeen() {
         type: types.HELP_SEEN
     }
 }
+
+export function changeFont(font) {
+    return {
+        type: types.CHANGE_FONT,
+        font
+    }
+}
