@@ -43864,6 +43864,8 @@ var _contrast2 = _interopRequireDefault(_contrast);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var styles = {
     pickerWrap: {},
     color: {
@@ -43886,6 +43888,13 @@ var styles = {
     }
 };
 
+var updateURL = function updateURL(paletteItem, value, palette) {
+    var newPalette = Object.assign({}, palette, _defineProperty({}, paletteItem, value));
+    window.location.hash = 'palette=' + Object.keys(newPalette).map(function (colour) {
+        return newPalette[colour].replace(/#/, '');
+    }).join('-');
+};
+
 var ColourPickers = function ColourPickers(_ref) {
     var onColourChange = _ref.onColourChange;
     var palette = _ref.palette;
@@ -43904,6 +43913,7 @@ var ColourPickers = function ColourPickers(_ref) {
                             backgroundColor: palette[colour]
                         }) },
                     _react2.default.createElement('input', { style: styles.picker, type: 'color', onChange: function onChange(event) {
+                            updateURL(colour, event.target.value, palette);
                             onColourChange(colour, event.target.value);
                         }, value: palette[colour] }),
                     _react2.default.createElement(
@@ -43943,6 +43953,9 @@ var styles = {
     exportCSS: {
         height: '300px',
         width: '95%'
+    },
+    exportURL: {
+        width: '95%'
     }
 };
 
@@ -43951,6 +43964,12 @@ var getPaletteCSS = function getPaletteCSS(palette) {
         var key = colour.match(/Background/) ? 'background-color' : 'color';
         return '.' + colour + ' {\n    ' + key + ': ' + palette[colour] + ';\n}\n';
     }).join('');
+};
+
+var getSharingURL = function getSharingURL(palette) {
+    return 'http://speculo.co/#palette=' + Object.keys(palette).map(function (colour) {
+        return palette[colour].replace(/#/, '');
+    }).join('-');
 };
 
 var Export = function Export(_ref) {
@@ -43971,6 +43990,22 @@ var Export = function Export(_ref) {
             _react2.default.createElement(
                 'p',
                 { className: 'bold mb2' },
+                'URL ',
+                _react2.default.createElement(
+                    'span',
+                    { className: 'italic', style: { fontSize: '12px' } },
+                    '(click to select)'
+                )
+            ),
+            _react2.default.createElement('input', { className: 'border p1 mb2', style: styles.exportURL, type: 'text', readOnly: true, onClick: function onClick(_ref2) {
+                    var target = _ref2.target;
+
+                    target.focus();
+                    target.select();
+                }, value: getSharingURL(palette) }),
+            _react2.default.createElement(
+                'p',
+                { className: 'bold mb2' },
                 'CSS ',
                 _react2.default.createElement(
                     'span',
@@ -43978,8 +44013,8 @@ var Export = function Export(_ref) {
                     '(click to select)'
                 )
             ),
-            _react2.default.createElement('textarea', { onClick: function onClick(_ref2) {
-                    var target = _ref2.target;
+            _react2.default.createElement('textarea', { onClick: function onClick(_ref3) {
+                    var target = _ref3.target;
 
                     target.focus();
                     target.select();
@@ -45536,16 +45571,31 @@ var _actionTypes = require('../constants/action-types');
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var initialState = {
-    bodyBackgroundColour: '#ffffff',
-    bodyTextColour: '#023161',
-    primaryButtonBackgroundColour: '#008cdd',
-    primaryButtonTextColour: '#ffffff',
-    secondaryButtonBackgroundColour: '#f7f7f7',
-    secondaryButtonTextColour: '#333333',
-    headingTextColour: '#333333',
-    secondaryHeadingTextColour: '#5a748e'
+var paletteItems = ['bodyBackgroundColour', 'bodyTextColour', 'primaryButtonBackgroundColour', 'primaryButtonTextColour', 'secondaryButtonBackgroundColour', 'secondaryButtonTextColour', 'headingTextColour', 'secondaryHeadingTextColour'];
+
+var defaultColours = ['#ffffff', '#023161', '#008cdd', '#ffffff', '#f7f7f7', '#333333', '#333333', '#5a748e'].reduce(function (accum, current, index) {
+    return Object.assign({}, accum, _defineProperty({}, paletteItems[index], current));
+}, {});
+
+var URLHasHash = function URLHasHash() {
+    return window.location.hash && window.location.hash.match(/palette/);
 };
+
+var getColoursFromURL = function getColoursFromURL() {
+    var paletteInURL = window.location.hash.match(/palette=(.+)/);
+    if (!paletteInURL) {
+        return defaultColours;
+    }
+    var colours = paletteInURL[1].split('-');
+    if (colours.length !== Object.keys(defaultColours).length) {
+        return defaultColours;
+    }
+    return colours.reduce(function (accum, current, index) {
+        return Object.assign({}, accum, _defineProperty({}, paletteItems[index], '#' + current));
+    }, {});
+};
+
+var initialState = URLHasHash() ? getColoursFromURL() : defaultColours;
 
 function paletteState() {
     var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];

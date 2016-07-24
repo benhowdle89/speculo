@@ -25,6 +25,13 @@ const styles = {
     }
 }
 
+const updateURL = (paletteItem, value, palette) => {
+    let newPalette = Object.assign({}, palette, {
+        [paletteItem]: value
+    })
+    window.location.hash = `palette=${Object.keys(newPalette).map(colour => newPalette[colour].replace(/#/, '')).join('-')}`
+}
+
 const ColourPickers = ({ onColourChange, palette }) => {
     return (
         <div>
@@ -36,6 +43,7 @@ const ColourPickers = ({ onColourChange, palette }) => {
                                 backgroundColor: palette[colour]
                             })}>
                                 <input style={styles.picker} type="color" onChange={(event) => {
+                                    updateURL(colour, event.target.value, palette)
                                     onColourChange(colour, event.target.value)
                                 }} value={palette[colour]} />
                             <p style={Object.assign({}, styles.color, {
