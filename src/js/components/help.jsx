@@ -23,10 +23,41 @@ const styles = {
     },
     twitterIcon: {
         fontSize: '24px'
+    },
+    helpSeenButton: {
+        borderRadius: '4px',
+        cursor: 'pointer',
+        color: '#fff',
+        textShadow: '0 -1px 0 rgba(0,0,0,.1)',
+        background: 'linear-gradient(#489dce,#1272ac)'
+    },
+    smallHelpText: {
+        color: '#b0bfc7',
+        fontSize: '12px'
     }
 }
 
-const Help = ({ toggleHelp }) => {
+const getFooterButton = (helpSeen, toggleHelp, setHelpSeen) => {
+    if(helpSeen){
+        return [
+            <p className="mr1">Share Speculo on</p>,
+            <a className="twitter-share-button" target="_BLANK" href="https://twitter.com/intent/tweet?text=Colour palette visualiser&url=http://speculo.co">
+                <i className="fa fa-twitter" style={styles.twitterIcon}></i>
+            </a>
+        ]
+    }
+    return [
+        <div style={styles.helpSeenButton} className="border p2 mb2" onClick={() => {
+            localStorage.setItem('helpSeen', true)
+            setHelpSeen()
+        }}>
+            Okay, I got it. Never ever, EVER, <span className="bold">ever</span> pop this up again.
+        </div>,
+        <p style={styles.smallHelpText}>* you can still access this information by clicking on the help icon in the top left.</p>
+    ]
+}
+
+const Help = ({ toggleHelp, helpSeen, setHelpSeen }) => {
     return (
         <ModalContainer onClose={toggleHelp}>
             <ModalDialog onClose={toggleHelp} style={styles.help}>
@@ -60,7 +91,7 @@ const Help = ({ toggleHelp }) => {
                         <div className="mb1">
                             <i style={styles.helpIcon} className="fa fa-link"></i>
                         </div>
-                        <p style={styles.helpText}>Export your created colour palette to CSS with one click, look for the link icon in the top left.</p>
+                        <p style={styles.helpText}>Export your created colour palette with one click, look for the link icon in the top left.</p>
                     </div>
                     <div className="flex flex-column items-center" style={styles.helpItem}>
                         <div className="mb1">
@@ -69,11 +100,10 @@ const Help = ({ toggleHelp }) => {
                         <p style={styles.helpText}>I hope you find Speculo to be useful and it provides you with a slick way to rapidly visualise your colour palettes.</p>
                     </div>
                 </div>
-                <div className="flex mt2 border-top pt2 items-center justify-center">
-                    <p className="mr1">Share Speculo on</p>
-                    <a className="twitter-share-button" target="_BLANK" href="https://twitter.com/intent/tweet?text=Colour palette visualiser&url=http://speculo.co">
-                        <i className="fa fa-twitter" style={styles.twitterIcon}></i>
-                    </a>
+                <div className={`flex mt2 border-top pt2 items-center justify-center ${!helpSeen && 'flex-column'}`}>
+                    {
+                        getFooterButton(helpSeen, toggleHelp, setHelpSeen)
+                    }
                 </div>
             </ModalDialog>
         </ModalContainer>

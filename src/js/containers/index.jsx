@@ -12,11 +12,21 @@ import Export from './../components/export.jsx'
 
 class Index extends React.Component {
 
+    componentWillMount() {
+        if(!this.props.layoutsState.helpSeen){
+            setTimeout(this.props.layoutActions.toggleHelp, 1500)
+        }
+    }
+
     render() {
         return (
             <div className="flex">
                 {(this.props.layoutsState.helpExpanded) && (
-                    <Help toggleHelp={this.props.layoutActions.toggleHelp} />
+                    <Help
+                        toggleHelp={this.props.layoutActions.toggleHelp}
+                        setHelpSeen={this.props.layoutActions.helpSeen}
+                        helpSeen={this.props.layoutsState.helpSeen}
+                    />
                 )}
                 {(this.props.layoutsState.exportExpanded) && (
                     <Export

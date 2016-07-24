@@ -30,3 +30,9 @@ export function toggleExport() {
         type: types.TOGGLE_EXPORT
     }
 }
+
+export function helpSeen() {
+    return {
+        type: types.HELP_SEEN
+    }
+}

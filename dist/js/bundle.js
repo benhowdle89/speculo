@@ -43710,6 +43710,7 @@ exports.minimiseLayout = minimiseLayout;
 exports.toggleSidebar = toggleSidebar;
 exports.toggleHelp = toggleHelp;
 exports.toggleExport = toggleExport;
+exports.helpSeen = helpSeen;
 
 var _actionTypes = require('../constants/action-types');
 
@@ -43745,6 +43746,12 @@ function toggleHelp() {
 function toggleExport() {
     return {
         type: types.TOGGLE_EXPORT
+    };
+}
+
+function helpSeen() {
+    return {
+        type: types.HELP_SEEN
     };
 }
 
@@ -44151,11 +44158,56 @@ var styles = {
     },
     twitterIcon: {
         fontSize: '24px'
+    },
+    helpSeenButton: {
+        borderRadius: '4px',
+        cursor: 'pointer',
+        color: '#fff',
+        textShadow: '0 -1px 0 rgba(0,0,0,.1)',
+        background: 'linear-gradient(#489dce,#1272ac)'
+    },
+    smallHelpText: {
+        color: '#b0bfc7',
+        fontSize: '12px'
     }
+};
+
+var getFooterButton = function getFooterButton(helpSeen, toggleHelp, setHelpSeen) {
+    if (helpSeen) {
+        return [_react2.default.createElement(
+            'p',
+            { className: 'mr1' },
+            'Share Speculo on'
+        ), _react2.default.createElement(
+            'a',
+            { className: 'twitter-share-button', target: '_BLANK', href: 'https://twitter.com/intent/tweet?text=Colour palette visualiser&url=http://speculo.co' },
+            _react2.default.createElement('i', { className: 'fa fa-twitter', style: styles.twitterIcon })
+        )];
+    }
+    return [_react2.default.createElement(
+        'div',
+        { style: styles.helpSeenButton, className: 'border p2 mb2', onClick: function onClick() {
+                localStorage.setItem('helpSeen', true);
+                setHelpSeen();
+            } },
+        'Okay, I got it. Never ever, EVER, ',
+        _react2.default.createElement(
+            'span',
+            { className: 'bold' },
+            'ever'
+        ),
+        ' pop this up again.'
+    ), _react2.default.createElement(
+        'p',
+        { style: styles.smallHelpText },
+        '* you can still access this information by clicking on the help icon in the top left.'
+    )];
 };
 
 var Help = function Help(_ref) {
     var toggleHelp = _ref.toggleHelp;
+    var helpSeen = _ref.helpSeen;
+    var setHelpSeen = _ref.setHelpSeen;
 
     return _react2.default.createElement(
         _reactModalDialog.ModalContainer,
@@ -44238,7 +44290,7 @@ var Help = function Help(_ref) {
                     _react2.default.createElement(
                         'p',
                         { style: styles.helpText },
-                        'Export your created colour palette to CSS with one click, look for the link icon in the top left.'
+                        'Export your created colour palette with one click, look for the link icon in the top left.'
                     )
                 ),
                 _react2.default.createElement(
@@ -44258,17 +44310,8 @@ var Help = function Help(_ref) {
             ),
             _react2.default.createElement(
                 'div',
-                { className: 'flex mt2 border-top pt2 items-center justify-center' },
-                _react2.default.createElement(
-                    'p',
-                    { className: 'mr1' },
-                    'Share Speculo on'
-                ),
-                _react2.default.createElement(
-                    'a',
-                    { className: 'twitter-share-button', target: '_BLANK', href: 'https://twitter.com/intent/tweet?text=Colour palette visualiser&url=http://speculo.co' },
-                    _react2.default.createElement('i', { className: 'fa fa-twitter', style: styles.twitterIcon })
-                )
+                { className: 'flex mt2 border-top pt2 items-center justify-center ' + (!helpSeen && 'flex-column') },
+                getFooterButton(helpSeen, toggleHelp, setHelpSeen)
             )
         )
     );
@@ -45254,6 +45297,7 @@ var MINIMISE_LAYOUT = exports.MINIMISE_LAYOUT = 'MINIMISE_LAYOUT';
 var TOGGLE_SIDEBAR = exports.TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
 var TOGGLE_HELP = exports.TOGGLE_HELP = 'TOGGLE_HELP';
 var TOGGLE_EXPORT = exports.TOGGLE_EXPORT = 'TOGGLE_EXPORT';
+var HELP_SEEN = exports.HELP_SEEN = 'HELP_SEEN';
 
 },{}],"/Users/benhowdle/Dropbox/htdocs/speculo/src/js/containers/index.jsx":[function(require,module,exports){
 'use strict';
@@ -45316,12 +45360,23 @@ var Index = function (_React$Component) {
     }
 
     _createClass(Index, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            if (!this.props.layoutsState.helpSeen) {
+                setTimeout(this.props.layoutActions.toggleHelp, 1500);
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
                 'div',
                 { className: 'flex' },
-                this.props.layoutsState.helpExpanded && _react2.default.createElement(_help2.default, { toggleHelp: this.props.layoutActions.toggleHelp }),
+                this.props.layoutsState.helpExpanded && _react2.default.createElement(_help2.default, {
+                    toggleHelp: this.props.layoutActions.toggleHelp,
+                    setHelpSeen: this.props.layoutActions.helpSeen,
+                    helpSeen: this.props.layoutsState.helpSeen
+                }),
                 this.props.layoutsState.exportExpanded && _react2.default.createElement(_export2.default, {
                     toggleExport: this.props.layoutActions.toggleExport,
                     palette: this.props.paletteState
@@ -45430,7 +45485,8 @@ var initialState = {
     maximisedLayout: null,
     sidebarExpanded: true,
     helpExpanded: false,
-    exportExpanded: false
+    exportExpanded: false,
+    helpSeen: localStorage.getItem('helpSeen')
 };
 
 function layoutsState() {
@@ -45457,6 +45513,11 @@ function layoutsState() {
         case _actionTypes.TOGGLE_EXPORT:
             return Object.assign({}, state, {
                 exportExpanded: !state.exportExpanded
+            });
+        case _actionTypes.HELP_SEEN:
+            return Object.assign({}, state, {
+                helpSeen: true,
+                helpExpanded: false
             });
         default:
             return state;

@@ -3,7 +3,8 @@ import {
     MINIMISE_LAYOUT,
     TOGGLE_SIDEBAR,
     TOGGLE_HELP,
-    TOGGLE_EXPORT
+    TOGGLE_EXPORT,
+    HELP_SEEN
 }
 from '../constants/action-types'
 
@@ -12,7 +13,8 @@ const initialState = {
     maximisedLayout: null,
     sidebarExpanded: true,
     helpExpanded: false,
-    exportExpanded: false
+    exportExpanded: false,
+    helpSeen: localStorage.getItem('helpSeen')
 }
 
 export default function layoutsState(state = initialState, action) {
@@ -36,6 +38,11 @@ export default function layoutsState(state = initialState, action) {
         case TOGGLE_EXPORT:
             return Object.assign({}, state, {
                 exportExpanded: !state.exportExpanded
+            })
+        case HELP_SEEN:
+            return Object.assign({}, state, {
+                helpSeen: true,
+                helpExpanded: false
             })
         default:
             return state
