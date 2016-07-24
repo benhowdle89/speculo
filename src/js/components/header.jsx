@@ -91,20 +91,18 @@ const Header = ({ onColourChange, palette, toggleSidebar, sidebarExpanded, toggl
                 <i style={styles.exportIcon} className="fa fa-link" onClick={toggleExport}></i>
                 <Logo />
             </div>
-            {maximisedLayout !== null && (
-                <div className="border-bottom p2" style={styles.fontChange}>
-                    <label className="flex">
-                        <span className="flex-auto">Font</span>
-                        <select className="" style={styles.fontSelect} onChange={event => changeFont(event.target.value)} value={currentFont}>
-                            {
-                                fonts.map(font => {
-                                    return <option value={font}>{font}</option>
-                                })
-                            }
-                        </select>
-                    </label>
-                </div>
-            )}
+            <div className="border-bottom p2" style={styles.fontChange}>
+                <label className="flex">
+                    <span className="flex-auto">Font</span>
+                    <select className="" style={styles.fontSelect} onChange={event => changeFont(event.target.value)} value={currentFont}>
+                        {
+                            fonts.map(font => {
+                                return <option value={font}>{font.replace(/-Regular/, '')}</option>
+                            })
+                        }
+                    </select>
+                </label>
+            </div>
             <ColourPickers onColourChange={onColourChange} palette={palette} />
             <i className="fa fa-chevron-circle-left" style={styles.contractIcon} onClick={() => {
                 window.scrollTo(0, 0)

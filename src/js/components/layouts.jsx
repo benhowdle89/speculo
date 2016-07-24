@@ -4,7 +4,7 @@ import LayoutsObject from './layouts/'
 import Help from './help.jsx'
 
 const getStyle = (currentFont) => {
-    return `.layouts.maximised { font-family: ${currentFont} }`
+    return `.layouts { font-family: ${currentFont} }`
 }
 
 const styles = {

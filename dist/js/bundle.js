@@ -69595,7 +69595,7 @@ var Header = function Header(_ref) {
             _react2.default.createElement('i', { style: styles.exportIcon, className: 'fa fa-link', onClick: toggleExport }),
             _react2.default.createElement(_logo2.default, null)
         ),
-        maximisedLayout !== null && _react2.default.createElement(
+        _react2.default.createElement(
             'div',
             { className: 'border-bottom p2', style: styles.fontChange },
             _react2.default.createElement(
@@ -69615,7 +69615,7 @@ var Header = function Header(_ref) {
                         return _react2.default.createElement(
                             'option',
                             { value: font },
-                            font
+                            font.replace(/-Regular/, '')
                         );
                     })
                 )
@@ -69860,7 +69860,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var getStyle = function getStyle(currentFont) {
-    return '.layouts.maximised { font-family: ' + currentFont + ' }';
+    return '.layouts { font-family: ' + currentFont + ' }';
 };
 
 var styles = {
@@ -71021,8 +71021,8 @@ var initialState = {
     helpExpanded: false,
     exportExpanded: false,
     helpSeen: localStorage.getItem('helpSeen'),
-    currentFont: 'Helvetica Neue',
-    fonts: ['Arvo', 'Helvetica Neue', 'Lato', 'Montserrat', 'Open Sans', 'Roboto']
+    currentFont: 'BLOKKNeue-Regular',
+    fonts: ['Arvo', 'BLOKKNeue-Regular', 'Helvetica Neue', 'Lato', 'Montserrat', 'Open Sans', 'Roboto']
 };
 
 function layoutsState() {

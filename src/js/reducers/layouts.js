@@ -16,8 +16,8 @@ const initialState = {
     helpExpanded: false,
     exportExpanded: false,
     helpSeen: localStorage.getItem('helpSeen'),
-    currentFont: 'Helvetica Neue',
-    fonts: ['Arvo',  'Helvetica Neue', 'Lato', 'Montserrat', 'Open Sans', 'Roboto']
+    currentFont: 'BLOKKNeue-Regular',
+    fonts: ['Arvo', 'BLOKKNeue-Regular', 'Helvetica Neue', 'Lato', 'Montserrat', 'Open Sans', 'Roboto']
 }
 
 export default function layoutsState(state = initialState, action) {
