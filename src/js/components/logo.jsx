@@ -11,7 +11,7 @@ const styles = {
 const Logo = () => {
     return (
         <div className="flex-auto pr1">
-            <p style={styles.logo} className="right">Speculo</p>
+            <a href="/" style={styles.logo} className="right text-decoration-none">Speculo</a>
         </div>
     )
 }

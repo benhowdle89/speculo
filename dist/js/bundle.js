@@ -45311,8 +45311,8 @@ var Logo = function Logo() {
         'div',
         { className: 'flex-auto pr1' },
         _react2.default.createElement(
-            'p',
-            { style: styles.logo, className: 'right' },
+            'a',
+            { href: '/', style: styles.logo, className: 'right text-decoration-none' },
             'Speculo'
         )
     );
