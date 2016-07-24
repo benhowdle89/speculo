@@ -2,17 +2,24 @@ import React from 'react'
 import contrast from 'contrast'
 
 const styles = {
+    pickerContainer: {
+
+    },
     pickerWrap: {
-        borderColor: 'rgba(0,0,0,0.1)'
+        borderColor: 'rgba(0,0,0,0.1)',
+        width: '50%'
     },
     color: {
         textTransform: 'capitalize',
-        fontSize: '12px'
+        fontSize: '12px',
+        textAlign: 'center',
+        lineHeight: '1.65'
     },
     labelPicker: {
         cursor: 'pointer',
         paddingTop: '10px',
-        paddingBottom: '10px'
+        paddingBottom: '10px',
+        minHeight: '100px'
     },
     picker: {
         opacity: 0,
@@ -49,11 +56,11 @@ const isValidHex = (hex) => {
 
 const ColourPickers = ({ onColourChange, palette }) => {
     return (
-        <div className="mt1">
+        <div style={styles.pickerContainer} className="flex flex-wrap">
             {
                 Object.keys(palette).map(colour => {
                     let colorText = isValidHex(palette[colour]) ? styles.colorText[contrast(palette[colour])] : styles.colorText.light
-                    return <div className="flex flex-column mb1 border-bottom border-top" style={styles.pickerWrap}>
+                    return <div className="flex flex-column" style={styles.pickerWrap}>
                             <label className="px1 flex justify-center items-center flex-column" style={Object.assign({}, styles.labelPicker, {
                                 backgroundColor: palette[colour]
                             })}>

@@ -43875,17 +43875,22 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var styles = {
+    pickerContainer: {},
     pickerWrap: {
-        borderColor: 'rgba(0,0,0,0.1)'
+        borderColor: 'rgba(0,0,0,0.1)',
+        width: '50%'
     },
     color: {
         textTransform: 'capitalize',
-        fontSize: '12px'
+        fontSize: '12px',
+        textAlign: 'center',
+        lineHeight: '1.65'
     },
     labelPicker: {
         cursor: 'pointer',
         paddingTop: '10px',
-        paddingBottom: '10px'
+        paddingBottom: '10px',
+        minHeight: '100px'
     },
     picker: {
         opacity: 0,
@@ -43927,12 +43932,12 @@ var ColourPickers = function ColourPickers(_ref) {
 
     return _react2.default.createElement(
         'div',
-        { className: 'mt1' },
+        { style: styles.pickerContainer, className: 'flex flex-wrap' },
         Object.keys(palette).map(function (colour) {
             var colorText = isValidHex(palette[colour]) ? styles.colorText[(0, _contrast2.default)(palette[colour])] : styles.colorText.light;
             return _react2.default.createElement(
                 'div',
-                { className: 'flex flex-column mb1 border-bottom border-top', style: styles.pickerWrap },
+                { className: 'flex flex-column', style: styles.pickerWrap },
                 _react2.default.createElement(
                     'label',
                     { className: 'px1 flex justify-center items-center flex-column', style: Object.assign({}, styles.labelPicker, {
