@@ -69082,6 +69082,7 @@ function toggleExport() {
 }
 
 function helpSeen() {
+    localStorage.setItem('helpSeen', true);
     return {
         type: types.HELP_SEEN
     };
@@ -69705,10 +69706,7 @@ var getFooterButton = function getFooterButton(helpSeen, toggleHelp, setHelpSeen
     }
     return [_react2.default.createElement(
         'div',
-        { style: styles.helpSeenButton, className: 'border p2 mb2', onClick: function onClick() {
-                localStorage.setItem('helpSeen', true);
-                setHelpSeen();
-            } },
+        { style: styles.helpSeenButton, className: 'border p2 mb2', onClick: setHelpSeen },
         'Okay, I got it. Never ever, EVER, ',
         _react2.default.createElement(
             'span',

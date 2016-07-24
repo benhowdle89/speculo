@@ -47,10 +47,7 @@ const getFooterButton = (helpSeen, toggleHelp, setHelpSeen) => {
         ]
     }
     return [
-        <div style={styles.helpSeenButton} className="border p2 mb2" onClick={() => {
-            localStorage.setItem('helpSeen', true)
-            setHelpSeen()
-        }}>
+        <div style={styles.helpSeenButton} className="border p2 mb2" onClick={setHelpSeen}>
             Okay, I got it. Never ever, EVER, <span className="bold">ever</span> pop this up again.
         </div>,
         <p style={styles.smallHelpText}>* you can still access this information by clicking on the help icon in the top left.</p>

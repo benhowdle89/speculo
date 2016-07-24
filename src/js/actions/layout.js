@@ -32,6 +32,7 @@ export function toggleExport() {
 }
 
 export function helpSeen() {
+    localStorage.setItem('helpSeen', true)
     return {
         type: types.HELP_SEEN
     }
