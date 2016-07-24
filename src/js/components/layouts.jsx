@@ -10,7 +10,8 @@ const getStyle = (currentFont) => {
 const styles = {
     layouts: {
         textAlign: 'center',
-        marginLeft: '16.666667%'
+        marginLeft: '16.666667%',
+        minWidth: '1000px'
     },
     layout: {
         width: 'calc(100% * (1/3) - 10px - 1px)',

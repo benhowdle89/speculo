@@ -7,7 +7,8 @@ const styles = {
     header: {
         boxShadow: '1px 0 1px rgba(5,30,50,.2)',
         height: '100vh',
-        backgroundColor: '#ffffff'
+        backgroundColor: '#ffffff',
+        minWidth: '215px'
     },
     contractedHeader: {
         width: '12px',

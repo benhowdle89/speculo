@@ -44058,7 +44058,8 @@ var styles = {
     header: {
         boxShadow: '1px 0 1px rgba(5,30,50,.2)',
         height: '100vh',
-        backgroundColor: '#ffffff'
+        backgroundColor: '#ffffff',
+        minWidth: '215px'
     },
     contractedHeader: {
         width: '12px',
@@ -44428,7 +44429,8 @@ var getStyle = function getStyle(currentFont) {
 var styles = {
     layouts: {
         textAlign: 'center',
-        marginLeft: '16.666667%'
+        marginLeft: '16.666667%',
+        minWidth: '1000px'
     },
     layout: {
         width: 'calc(100% * (1/3) - 10px - 1px)',
