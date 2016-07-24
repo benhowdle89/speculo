@@ -23,6 +23,7 @@
     "babel-preset-react": "^6.11.1",
     "babelify": "^7.3.0",
     "contrast": "^1.0.1",
+    "fabric": "^1.6.3",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-modal-dialog": "^3.0.2",
