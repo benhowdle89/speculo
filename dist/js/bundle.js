@@ -71021,7 +71021,7 @@ var initialState = {
     helpExpanded: false,
     exportExpanded: false,
     helpSeen: localStorage.getItem('helpSeen'),
-    currentFont: 'BLOKKNeue-Regular',
+    currentFont: 'Lato',
     fonts: ['Arvo', 'BLOKKNeue-Regular', 'Helvetica Neue', 'Lato', 'Montserrat', 'Open Sans', 'Roboto']
 };
 
